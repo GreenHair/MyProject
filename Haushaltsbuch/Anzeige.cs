@@ -22,6 +22,7 @@ namespace Haushaltsbuch
             Margin = new Thickness(0, 20, 0, 0)
         };
         protected List<Label> balken = new List<Label>();
+        protected List<Label> betrag = new List<Label>();
 
         public Anzeige(List<Rechnung> kassenzettel)
         {
@@ -79,19 +80,25 @@ namespace Haushaltsbuch
             uebersicht = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Center, MinHeight = 250 };
             StackPanel gesamt = new StackPanel { VerticalAlignment = VerticalAlignment.Bottom, Margin = new Thickness(10) };
             Label betragAlles = new Label { Content = alles.ToString("C") };
-            Label balkenAlles = new Label { Background = Brushes.Green, Height = alles }; balken.Add(balkenAlles);
+            betrag.Add(betragAlles);
+            Label balkenAlles = new Label { Background = Brushes.Green, Height = alles };
+            balken.Add(balkenAlles);
             Label nameAlles = new Label { Content = "Gesamt" };
             gesamt.Children.Add(betragAlles); gesamt.Children.Add(balkenAlles); gesamt.Children.Add(nameAlles);
             uebersicht.Children.Add(gesamt);
             StackPanel food = new StackPanel { VerticalAlignment = VerticalAlignment.Bottom, Margin = new Thickness(10) };
             Label betragEssen = new Label { Content = essen.ToString("C") };
-            Label balkenEssen = new Label { Background = Brushes.Green, Height = essen }; balken.Add(balkenEssen);
+            betrag.Add(betragEssen);
+            Label balkenEssen = new Label { Background = Brushes.Green, Height = essen };
+            balken.Add(balkenEssen);
             Label nameEssen = new Label { Content = "Lebensmittel" };
             food.Children.Add(betragEssen); food.Children.Add(balkenEssen); food.Children.Add(nameEssen);
             uebersicht.Children.Add(food);
             StackPanel Sonstige = new StackPanel { VerticalAlignment = VerticalAlignment.Bottom, Margin = new Thickness(10) };
             Label betragSonstige = new Label { Content = sonstige.ToString("C") };
-            Label balkenSonstige = new Label { Background = Brushes.Green, Height = sonstige }; balken.Add(balkenSonstige);
+            betrag.Add(betragSonstige);
+            Label balkenSonstige = new Label { Background = Brushes.Green, Height = sonstige };
+            balken.Add(balkenSonstige);
             Label nameSonstige = new Label { Content = "Sonstige" };
             Sonstige.Children.Add(betragSonstige); Sonstige.Children.Add(balkenSonstige); Sonstige.Children.Add(nameSonstige);
             uebersicht.Children.Add(Sonstige);

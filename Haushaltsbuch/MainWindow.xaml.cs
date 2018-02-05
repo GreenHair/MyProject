@@ -118,16 +118,45 @@ namespace Haushaltsbuch
             foreach(Einkommen ein in einkommen)
             {
                 Tabelle.RowDefinitions.Add(new RowDefinition());
-                TextBox was = new TextBox { Text = ein.Bezeichnung, IsReadOnly = true };
+                TextBox was = new TextBox { Text = ein.Bezeichnung, IsReadOnly = true, Width = 150 };
                 Grid.SetColumn(was, 0);
                 Grid.SetRow(was, i);
                 Tabelle.Children.Add(was);
-                TextBox wieviel = new TextBox { Text = ein.Betrag.ToString("C"), IsReadOnly = true };
+                TextBox wieviel = new TextBox
+                {
+                    Text = ein.Betrag.ToString("C"),
+                    IsReadOnly = true,
+                    Width = 150,
+                    HorizontalContentAlignment = HorizontalAlignment.Right
+                }; 
                 Grid.SetColumn(wieviel, 1);
                 Grid.SetRow(wieviel, i);
                 Tabelle.Children.Add(wieviel);
                 i++;
             }
+            Tabelle.RowDefinitions.Add(new RowDefinition());
+            TextBox gesamt = new TextBox
+            {
+                Text = "Gesamt",
+                Width = 150,
+                FontWeight = FontWeights.Bold,
+                BorderBrush = Brushes.Black,
+                BorderThickness = new Thickness(0, 2, 0, 0)
+            };
+            Grid.SetRow(gesamt, i);
+            Tabelle.Children.Add(gesamt);
+            TextBox gesamtSumme = new TextBox
+            {
+                Text = einkommen.Sum(e => e.Betrag).ToString("C"),
+                HorizontalContentAlignment = HorizontalAlignment.Right,
+                Width = 150,
+                FontWeight = FontWeights.Bold,
+                BorderBrush = Brushes.Black,
+                BorderThickness = new Thickness(0, 2, 0, 0)
+            };
+            Grid.SetRow(gesamtSumme, i);
+            Grid.SetColumn(gesamtSumme, 1);
+            Tabelle.Children.Add(gesamtSumme);
             stckEinkommen.Children.Add(Tabelle);
         }
 
