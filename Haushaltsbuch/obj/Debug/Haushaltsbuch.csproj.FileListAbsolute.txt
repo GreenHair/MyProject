@@ -13,3 +13,6 @@ C:\Users\Auke Swen\documents\visual studio 2015\Projects\Haushaltsbuch\Haushalts
 C:\Users\Auke Swen\documents\visual studio 2015\Projects\Haushaltsbuch\Haushaltsbuch\obj\Debug\Haushaltsbuch.csproj.GenerateResource.Cache
 C:\Users\Auke Swen\documents\visual studio 2015\Projects\Haushaltsbuch\Haushaltsbuch\obj\Debug\Haushaltsbuch.exe
 C:\Users\Auke Swen\documents\visual studio 2015\Projects\Haushaltsbuch\Haushaltsbuch\obj\Debug\Haushaltsbuch.pdb
+D:\Users\vm\Source\Repos\MyProject\Haushaltsbuch\bin\Debug\Haushaltsbuch.exe.config
+D:\Users\vm\Source\Repos\MyProject\Haushaltsbuch\obj\Debug\Haushaltsbuch.exe
+D:\Users\vm\Source\Repos\MyProject\Haushaltsbuch\obj\Debug\Haushaltsbuch.pdb
