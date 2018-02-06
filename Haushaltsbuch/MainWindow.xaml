@@ -29,15 +29,15 @@
             </TabControl>
         </ScrollViewer>
         <Grid Name="grdEinkommen" Visibility="Collapsed" DockPanel.Dock="Top">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <StackPanel Name="stckEinkommen" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <StackPanel Name="stckEinkommen" Grid.Row="0">
                 <!--<Label Content="Einkommen aktueller Monat" HorizontalAlignment="Center" FontSize="16" FontWeight="Bold"/>-->
 
             </StackPanel>
-            <StackPanel Name="stckEinkommenPrev" Grid.Column="1"></StackPanel>
+            <StackPanel Name="stckEinkommenPrev" Grid.Row="1"></StackPanel>
         </Grid>
     </DockPanel>
 </Window>

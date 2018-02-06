@@ -210,18 +210,19 @@ namespace Haushaltsbuch
                 balken[i].Tag = i;
                 Clock = wachsen.CreateClock();
                 Clock.CurrentTimeInvalidated += Clock_CurrentTimeInvalidated;
-                wachsen.ApplyAnimationClock(Label.HeightProperty, Clock);
+                balken[i].ApplyAnimationClock(Label.HeightProperty, Clock);
                // balken[i].BeginAnimation(Label.HeightProperty, wachsen);
             }
         }
 
         private void Clock_CurrentTimeInvalidated(object sender, EventArgs e)
         {
-            if(sender is Label)
-            {
-                Label lbl = sender as Label;
-                betrag[(int)lbl.Tag].Content = lbl.Height.ToString("C");
-            }
+            double value = Convert.ToDouble( balken[0].GetValue(Label.HeightProperty));
+            betrag[0].Content = value.ToString("C");
+            double value1 = Convert.ToDouble(balken[1].GetValue(Label.HeightProperty));
+            betrag[1].Content = value1.ToString("C");
+            double value2 = Convert.ToDouble(balken[2].GetValue(Label.HeightProperty));
+            betrag[2].Content = value2.ToString("C");
         }
     }
 }
