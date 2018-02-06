@@ -60,7 +60,10 @@ namespace Haushaltsbuch
         {
             var AktMonEin = from einnahmen in myHaushaltsbuch.einnahmen where einnahmen.Datum.Month == DateTime.Now.Month select einnahmen;
             UebersichtEinkommen("Einkommen aktueller Monat", stckEinkommen, AktMonEin);
-            
+
+            var PrevMonEin = from einnahmen in myHaushaltsbuch.einnahmen where einnahmen.Datum.Month == DateTime.Now.Month -1 select einnahmen;
+            UebersichtEinkommen("Einkommen vorherigen Monat", stckEinkommen, PrevMonEin);
+
             //myHaushaltsbuch = new Hauptbuch();
             //this_week = new Anzeige(myHaushaltsbuch.dieseWoche, false);
             //last_week = new Anzeige(myHaushaltsbuch.LetzteWoche, false);
