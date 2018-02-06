@@ -47,7 +47,7 @@ namespace Haushaltsbuch
 
         private void Uebersicht_Click(object sender, RoutedEventArgs e)
         {
-            stckEinkommen.Visibility = Visibility.Collapsed;
+            grdEinkommen.Visibility = Visibility.Collapsed;
             scrlbar.Visibility = Visibility.Visible;
         }
 
@@ -62,7 +62,7 @@ namespace Haushaltsbuch
             UebersichtEinkommen("Einkommen aktueller Monat", stckEinkommen, AktMonEin);
 
             var PrevMonEin = from einnahmen in myHaushaltsbuch.einnahmen where einnahmen.Datum.Month == DateTime.Now.Month -1 select einnahmen;
-            UebersichtEinkommen("Einkommen vorherigen Monat", stckEinkommen, PrevMonEin);
+            UebersichtEinkommen("Einkommen vorherigen Monat", stckEinkommenPrev, PrevMonEin);
 
             //myHaushaltsbuch = new Hauptbuch();
             //this_week = new Anzeige(myHaushaltsbuch.dieseWoche, false);
@@ -95,7 +95,7 @@ namespace Haushaltsbuch
 
         private void Einkommen_Click(object sender, RoutedEventArgs e)
         {
-            stckEinkommen.Visibility = Visibility.Visible;
+            grdEinkommen.Visibility = Visibility.Visible;
             scrlbar.Visibility = Visibility.Collapsed;
         }
 

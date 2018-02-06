@@ -99,7 +99,23 @@ namespace Haushaltsbuch {
         
         #line 31 "..\..\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        internal System.Windows.Controls.Grid grdEinkommen;
+        
+        #line default
+        #line hidden
+        
+        
+        #line 36 "..\..\MainWindow.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.StackPanel stckEinkommen;
+        
+        #line default
+        #line hidden
+        
+        
+        #line 40 "..\..\MainWindow.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        internal System.Windows.Controls.StackPanel stckEinkommenPrev;
         
         #line default
         #line hidden
@@ -220,7 +236,13 @@ namespace Haushaltsbuch {
             #line hidden
             return;
             case 13:
+            this.grdEinkommen = ((System.Windows.Controls.Grid)(target));
+            return;
+            case 14:
             this.stckEinkommen = ((System.Windows.Controls.StackPanel)(target));
+            return;
+            case 15:
+            this.stckEinkommenPrev = ((System.Windows.Controls.StackPanel)(target));
             return;
             }
             this._contentLoaded = true;

@@ -28,9 +28,16 @@
                 <TabItem Header="Last Month" Name="lastMonth" GotFocus="tabItem_GotFocus"></TabItem>
             </TabControl>
         </ScrollViewer>
-        <StackPanel Name="stckEinkommen" Visibility="Collapsed" DockPanel.Dock="Top">
-            <!--<Label Content="Einkommen aktueller Monat" HorizontalAlignment="Center" FontSize="16" FontWeight="Bold"/>-->
-            
-        </StackPanel>
+        <Grid Name="grdEinkommen" Visibility="Collapsed" DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Name="stckEinkommen" Grid.Column="0">
+                <!--<Label Content="Einkommen aktueller Monat" HorizontalAlignment="Center" FontSize="16" FontWeight="Bold"/>-->
+
+            </StackPanel>
+            <StackPanel Name="stckEinkommenPrev" Grid.Column="1"></StackPanel>
+        </Grid>
     </DockPanel>
 </Window>
