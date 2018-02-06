@@ -23,6 +23,7 @@ namespace Haushaltsbuch
         };
         protected List<Label> balken = new List<Label>();
         protected List<Label> betrag = new List<Label>();
+        protected AnimationClock Clock = null;
 
         public Anzeige(List<Rechnung> kassenzettel)
         {
@@ -203,10 +204,23 @@ namespace Haushaltsbuch
                 BeginTime = TimeSpan.Parse("0:0:0")
             };
 
-            foreach(Label l in balken)
+            for(int i = 0; i < balken.Count; i++)
             {
-                wachsen.To = l.Height;
-                l.BeginAnimation(Label.HeightProperty, wachsen);
+                wachsen.To = balken[i].Height;
+                balken[i].Tag = i;
+                Clock = wachsen.CreateClock();
+                Clock.CurrentTimeInvalidated += Clock_CurrentTimeInvalidated;
+                wachsen.ApplyAnimationClock(Label.HeightProperty, Clock);
+               // balken[i].BeginAnimation(Label.HeightProperty, wachsen);
+            }
+        }
+
+        private void Clock_CurrentTimeInvalidated(object sender, EventArgs e)
+        {
+            if(sender is Label)
+            {
+                Label lbl = sender as Label;
+                betrag[(int)lbl.Tag].Content = lbl.Height.ToString("C");
             }
         }
     }
