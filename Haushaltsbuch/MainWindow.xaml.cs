@@ -47,13 +47,16 @@ namespace Haushaltsbuch
 
         private void Uebersicht_Click(object sender, RoutedEventArgs e)
         {
-            grdEinkommen.Visibility = Visibility.Collapsed;
             scrlbar.Visibility = Visibility.Visible;
+            grdEinkommen.Visibility = Visibility.Collapsed;
+            tbcEintrag.Visibility = Visibility.Collapsed;            
         }
 
         private void Eintrag_Click(object sender, RoutedEventArgs e)
         {
-
+            tbcEintrag.Visibility = Visibility.Visible;
+            scrlbar.Visibility = Visibility.Collapsed;
+            grdEinkommen.Visibility = Visibility.Collapsed;            
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -64,17 +67,8 @@ namespace Haushaltsbuch
             var PrevMonEin = from einnahmen in myHaushaltsbuch.einnahmen where einnahmen.Datum.Month == DateTime.Now.Month -1 select einnahmen;
             UebersichtEinkommen("Einkommen vorherigen Monat", stckEinkommenPrev, PrevMonEin);
 
-            //myHaushaltsbuch = new Hauptbuch();
-            //this_week = new Anzeige(myHaushaltsbuch.dieseWoche, false);
-            //last_week = new Anzeige(myHaushaltsbuch.LetzteWoche, false);
-            //this_month = new Anzeige(myHaushaltsbuch.monatsliste(0), true);
-            //last_month = new Anzeige(myHaushaltsbuch.monatsliste(1), true);
-            //thisWeek.Content = this_week.Dashboard;
-            //lastWeek.Content = last_week.Dashboard;
-            //thisMonth.Content = this_month.Dashboard;
-            //lastMonth.Content = last_month.Dashboard;
-            //if (thisWeek.Focus()) ;
-            // MessageBox.Show("ThisWeek hat focus");
+            tbiRechnung.Content = Eintrag.NeuerRechnung(myHaushaltsbuch.)
+
             this_week.diagrammAnimiert();
             
         }
@@ -97,6 +91,7 @@ namespace Haushaltsbuch
         {
             grdEinkommen.Visibility = Visibility.Visible;
             scrlbar.Visibility = Visibility.Collapsed;
+            tbcEintrag.Visibility = Visibility.Collapsed;
         }
 
         private void Suchen_CLick(object sender, RoutedEventArgs e)

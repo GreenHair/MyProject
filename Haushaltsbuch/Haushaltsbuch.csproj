@@ -61,6 +61,7 @@
     </ApplicationDefinition>
     <Compile Include="Anzeige.cs" />
     <Compile Include="Einkommen.cs" />
+    <Compile Include="Eintrag.cs" />
     <Compile Include="Hauptbuch.cs" />
     <Compile Include="MonatsAnzeige.cs" />
     <Compile Include="Posten.cs" />
