@@ -10,9 +10,9 @@
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Übersicht" Click="Uebersicht_Click"/>
             <MenuItem Header="Neuer Eintrag" Click="Eintrag_Click">
-                <MenuItem Header="Rechnung"/>
+                <!--<MenuItem Header="Rechnung"/>
                 <MenuItem Header="Laden"/>
-                <MenuItem Header="Kategorie"/>
+                <MenuItem Header="Kategorie"/>-->
             </MenuItem>
             <MenuItem Header="Einkommen" Click="Einkommen_Click"/>
             <MenuItem Header="Suchen" Click="Suchen_CLick"/>
@@ -39,5 +39,10 @@
             </StackPanel>
             <StackPanel Name="stckEinkommenPrev" Grid.Row="1"></StackPanel>
         </Grid>
+        <TabControl Name="tbcEintrag" DockPanel.Dock="Top" Visibility="Collapsed">
+            <TabItem Header="Rechnung" Name="tbiRechnung" ></TabItem>
+            <TabItem Header="Laden" Name="tbiShop"></TabItem>
+            <TabItem Header="Produktgruppe" Name="tbiProdgr"></TabItem>
+        </TabControl>
     </DockPanel>
 </Window>
