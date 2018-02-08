@@ -159,6 +159,22 @@ namespace Haushaltsbuch
             }
         }
 
+        public List<Shop> AlleLaeden
+        {
+            get
+            {
+                return alleLaeden;
+            }
+        }
+
+        public List<Produktgruppe> Kategorien
+        {
+            get
+            {
+                return kategorien;
+            }
+        }
+
         private List<Rechnung> listeBauen(string queryString)
         {
             List<Rechnung> temp = new List<Rechnung>();

@@ -10,23 +10,28 @@ namespace Haushaltsbuch
 {
     class Eintrag
     {
-        public static StackPanel NeuerRechnung(List<Shop> Laeden, List<Produktgruppe> Prodgr, List<Person> Familie)
+        private StackPanel _zeileRechnung;
+        private StackPanel _rechnungsPosten;
+        public StackPanel stckRechnung { get; private set; }
+
+        public StackPanel NeuerRechnung(List<Shop> Laeden, List<Produktgruppe> Prodgr, List<Person> Familie)
         {
-            StackPanel stackpanel = new StackPanel();
-            stackpanel.Children.Add(new Label
+            _rechnungsPosten = new StackPanel();
+            stckRechnung = new StackPanel();
+            stckRechnung.Children.Add(new Label
             {
                 Content = "Neuer Rechnung",
                 FontSize = 18,
                 FontWeight = FontWeights.DemiBold,
                 HorizontalAlignment = HorizontalAlignment.Center
             });
-            StackPanel ZeileRechnung = new StackPanel { Orientation = Orientation.Horizontal };
-            ZeileRechnung.Children.Add(new DatePicker { SelectedDate = DateTime.Now.Date });
-            ZeileRechnung.Children.Add(new ComboBox { ItemsSource = Laeden });
-            ZeileRechnung.Children.Add(new ComboBox { ItemsSource = Familie });
-            ZeileRechnung.Children.Add(new CheckBox { Content = "Einmalig", IsChecked = true });
-            stackpanel.Children.Add(ZeileRechnung);
-            stackpanel.Children.Add(new Label
+            _zeileRechnung = new StackPanel { Orientation = Orientation.Horizontal };
+            _zeileRechnung.Children.Add(new DatePicker { SelectedDate = DateTime.Now.Date });
+            _zeileRechnung.Children.Add(new ComboBox { ItemsSource = Laeden });
+            _zeileRechnung.Children.Add(new ComboBox { ItemsSource = Familie });
+            _zeileRechnung.Children.Add(new CheckBox { Content = "Einmalig", IsChecked = true });
+            stckRechnung.Children.Add(_zeileRechnung);
+            stckRechnung.Children.Add(new Label
             {
                 Content = "Rechnungsposten",
                 FontSize = 18,
@@ -39,9 +44,22 @@ namespace Haushaltsbuch
                 ZeilePosten.Children.Add(new TextBox { Width = 200 });
                 ZeilePosten.Children.Add(new TextBox { Width = 100 });
                 ZeilePosten.Children.Add(new ComboBox { ItemsSource = Prodgr });
-                stackpanel.Children.Add(ZeilePosten);
+                _rechnungsPosten.Children.Add(ZeilePosten);
             }
-            return stackpanel;
+            stckRechnung.Children.Add(_rechnungsPosten);
+            Button btnRechnung = new Button { HorizontalAlignment = HorizontalAlignment.Right, Content = "OK" };
+            btnRechnung.Click += BtnRechnung_Click;
+            stckRechnung.Children.Add(btnRechnung);
+            return stckRechnung;
+        }
+
+        private void BtnRechnung_Click(object sender, RoutedEventArgs e)
+        {
+            DatePicker datum = _zeileRechnung.Children[0] as DatePicker;
+            ComboBox laden = _zeileRechnung.Children[1] as ComboBox;
+            ComboBox person = _zeileRechnung.Children[2] as ComboBox;
+            CheckBox einmalig = _zeileRechnung.Children[3] as CheckBox;
+            MessageBox.Show(datum.SelectedDate.ToString() + " | " + laden + " | " + person + " | " + einmalig);
         }
     }
 }
