@@ -83,6 +83,16 @@ namespace Haushaltsbuch
             MessageBox.Show(date.ToString("yyyy-MM-dd") + " | " + ((Shop)(laden.SelectedItem)).id + " | " 
                 + ((Person)(person.SelectedItem)).id + " | " + Convert.ToInt32(einmalig));
             
+            foreach(var zeile in _zeileRechnung.Children)
+            {
+                if(zeile is StackPanel)
+                {
+                    StackPanel row = zeile as StackPanel;
+                    TextBox bez = row.Children[0] as TextBox;
+                    TextBox bet = row.Children[0] as TextBox;
+                }
+            }
+
         }
 
         public StackPanel NeuerLaden()
