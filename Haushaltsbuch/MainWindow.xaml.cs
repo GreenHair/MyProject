@@ -66,8 +66,10 @@ namespace Haushaltsbuch
 
             var PrevMonEin = from einnahmen in myHaushaltsbuch.einnahmen where einnahmen.Datum.Month == DateTime.Now.Month -1 select einnahmen;
             UebersichtEinkommen("Einkommen vorherigen Monat", stckEinkommenPrev, PrevMonEin);
-            Eintrag eintrag = new Eintrag();
-            tbiRechnung.Content = eintrag.NeuerRechnung(myHaushaltsbuch.AlleLaeden, myHaushaltsbuch.Kategorien, myHaushaltsbuch.familienmitglied);
+            Eintrag eintrag = new Eintrag(myHaushaltsbuch.AlleLaeden, myHaushaltsbuch.Kategorien);
+            tbiRechnung.Content = eintrag.NeuerRechnung(myHaushaltsbuch.familienmitglied);
+            tbiShop.Content = eintrag.NeuerLaden();
+            tbiProdgr.Content = eintrag.NeuerKategorie();
 
             this_week.diagrammAnimiert();
             
