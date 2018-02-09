@@ -186,20 +186,21 @@ namespace Haushaltsbuch
                 Rechnung r = new Rechnung(Reader[0], alleLaeden[Convert.ToInt32(Reader[1]) - 1], Reader[2], Reader[3], _familienmitglied[Convert.ToInt32(Reader[4]) - 1]);
                 temp.Add(r);
             }
-            connection.Close();
+            Reader.Close();
 
             foreach (Rechnung kassenzettel in temp)
             {
                 command.CommandText = "SELECT * FROM ausgaben WHERE rechnungsnr=" + kassenzettel.id;
-                connection.Open();
+                //connection.Open();
                 Reader = command.ExecuteReader();
                 while (Reader.Read())
                 {
                     Posten p = new Posten(Reader[0], Reader[1], Reader[2], kategorien[Convert.ToInt32(Reader[3]) - 1]);
                     kassenzettel.items.Add(p);
                 }
-                connection.Close();
+                Reader.Close();
             }
+            connection.Close();
             return temp;
         }
 
