@@ -78,12 +78,15 @@ namespace Haushaltsbuch
             ComboBox person = _zeileRechnung.Children[2] as ComboBox;
             CheckBox einmalig = _zeileRechnung.Children[3] as CheckBox;
             DateTime date = Convert.ToDateTime(datum.SelectedDate);
-            
+            CultureInfo ci = new CultureInfo("DE-de");
+            NumberFormatInfo ni = ci.NumberFormat;
+            ni.NumberDecimalSeparator = ".";
+
             string result = date.ToString("yyyy-MM-dd") + " | " + ((Shop)(laden.SelectedItem)).id + " | " 
-                + ((Person)(person.SelectedItem)).id + " | " + Convert.ToInt32(einmalig);
+                + ((Person)(person.SelectedItem)).id + " | " + Convert.ToInt32(einmalig.IsChecked);
 
             List<TextBox> tb_list = new List<TextBox>();
-            foreach(var zeile in _zeileRechnung.Children)
+            foreach(var zeile in _rechnungsPosten.Children)
             {
                 if(zeile is StackPanel)
                 {
@@ -91,15 +94,20 @@ namespace Haushaltsbuch
                     TextBox bez = row.Children[0] as TextBox;
                     TextBox bet = row.Children[1] as TextBox;
                     ComboBox kat = row.Children[3] as ComboBox;
-                    result += "\n" + bez.Text + " | " + bet.Text + " | " + kat.SelectedItem;
-                    tb_list.Add(bez);
-                    tb_list.Add(bet);
+                    double betrag;
+                    if (bez.Text != "" && bez.Text != null)
+                    {
+                        betrag = Convert.ToDouble(bet.Text);
+                        string b = string.Format(ni, "{0}", betrag);
+                        result += "\n" + bez.Text + " | " + b + " | " + ((Produktgruppe)kat.SelectedItem).id;
+                        tb_list.Add(bez);
+                        tb_list.Add(bet);
+                    }
                 }
             }
-            CultureInfo ci = new CultureInfo("DE-de");
-            NumberFormatInfo ni = ci.NumberFormat;
-            ni.NumberDecimalSeparator = ".";
-            MessageBox.Show(String.Format(ci,"{0}",result));
+            
+            
+            MessageBox.Show(result);
             Clear(tb_list.ToArray());
         }
 

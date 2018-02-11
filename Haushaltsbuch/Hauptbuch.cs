@@ -38,13 +38,13 @@ namespace Haushaltsbuch
            
             while (Reader.Read())
             {
-                Person p = new Person(Reader[0], Reader[1], Reader[2]);
+                Person p = new Person(Reader["ID"], Reader["vorname"], Reader["nachname"]);
                 _familienmitglied.Add(p);
             }
-            connection.Close();
+            Reader.Close();
 
             command.CommandText = "SELECT * FROM laden";
-            connection.Open();
+            //connection.Open();
             Reader = command.ExecuteReader();
 
             while (Reader.Read())
@@ -52,10 +52,10 @@ namespace Haushaltsbuch
                 Shop l = new Shop(Reader[0], Reader[1], Reader[2]);
                 alleLaeden.Add(l);
             }
-            connection.Close();
+            Reader.Close();
 
             command.CommandText = "SELECT * FROM produktgruppe";
-            connection.Open();
+           // connection.Open();
             Reader = command.ExecuteReader();
 
             while (Reader.Read())
