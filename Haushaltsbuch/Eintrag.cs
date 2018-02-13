@@ -47,9 +47,9 @@ namespace Haushaltsbuch
             stckRechnung.Children.Add(Zeile1);
             _zeileRechnung = new StackPanel { Orientation = Orientation.Horizontal };
             _zeileRechnung.Children.Add(new DatePicker { SelectedDate = DateTime.Now.Date });
-            _zeileRechnung.Children.Add(new ComboBox { ItemsSource = Laeden,Width = 100 });
-            _zeileRechnung.Children.Add(new ComboBox { ItemsSource = Familie,Width = 100 });
-            _zeileRechnung.Children.Add(new CheckBox { Content = "Einmalig", IsChecked = true });
+            _zeileRechnung.Children.Add(new ComboBox { ItemsSource = Laeden,Width = 100, Text = "Laden" });
+            _zeileRechnung.Children.Add(new ComboBox { ItemsSource = Familie,Width = 100, Text = "Person" });
+            _zeileRechnung.Children.Add(new CheckBox { Content = "Einmalig", IsChecked = true, VerticalAlignment = VerticalAlignment.Center });
             stckRechnung.Children.Add(_zeileRechnung);
             stckRechnung.Children.Add(new Label
             {
@@ -60,10 +60,10 @@ namespace Haushaltsbuch
             for (int i = 0; i < 20; i++)
             {
                 StackPanel ZeilePosten = new StackPanel { Orientation = Orientation.Horizontal };
-                ZeilePosten.Children.Add(new TextBox { Width = 200 });
-                ZeilePosten.Children.Add(new TextBox { Width = 100, HorizontalContentAlignment = HorizontalAlignment.Right });
+                ZeilePosten.Children.Add(new TextBox { Text = "", Width = 200 });
+                ZeilePosten.Children.Add(new TextBox { Text = "", Width = 100, HorizontalContentAlignment = HorizontalAlignment.Right });
                 ZeilePosten.Children.Add(new Label { Content = "€" });
-                ZeilePosten.Children.Add(new ComboBox { ItemsSource = Prodgr,Width = 100 });
+                ZeilePosten.Children.Add(new ComboBox { ItemsSource = Prodgr,Width = 100, Text = "Produktgruppe" });
                 _rechnungsPosten.Children.Add(ZeilePosten);
             }
             stckRechnung.Children.Add(_rechnungsPosten);
