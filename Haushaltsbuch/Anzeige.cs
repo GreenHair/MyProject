@@ -12,6 +12,7 @@ namespace Haushaltsbuch
 {
     class Anzeige
     {
+        public ScrollViewer scrlAnzeige = new ScrollViewer();
         protected StackPanel _dashboard = new StackPanel();
         protected StackPanel uebersicht;
         TextBox textBox = new TextBox
@@ -27,37 +28,12 @@ namespace Haushaltsbuch
 
         public Anzeige(List<Rechnung> kassenzettel)
         {
-            //isMonat = m;
             _dashboard.Children.Add(uebersichtErstellen(kassenzettel));
-            //if (isMonat)
-            //{
-            //    foreach (Label lab in balken)
-            //    {
-            //        lab.Height = lab.Height / 10;
-            //    }
-                
-            //}
             
             _dashboard.Children.Add(nachKategorien(kassenzettel));
             _dashboard.Children.Add(nachLaeden(kassenzettel));
             _dashboard.Children.Add(datailUebersicht(kassenzettel));
-
-            //foreach (var zeile in kassenzettel)
-            //{
-            //    double sum = 0.0;
-            //    foreach (Posten pos in zeile.items)
-            //    {
-            //        sum += pos.betrag;
-            //    }
-            //    string z = String.Format("{0,-20}{1,15}{2,10}{3,8:C}\n",zeile.laden.name,zeile.datum.ToShortDateString(),zeile.person.vorname,sum);
-
-            //    textBox.AppendText(z);
-            //    foreach (Posten pos in zeile.items)
-            //    {
-            //        textBox.AppendText("\t" + pos.bezeichnung + "\t\t\t" + pos.betrag.ToString("C") + "\n");
-            //    }
-            //}
-            //_dashboard.Children.Add(textBox);
+            scrlAnzeige.Content = _dashboard;
         }
 
         public StackPanel Dashboard

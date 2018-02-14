@@ -81,10 +81,10 @@ namespace Haushaltsbuch
             CultureInfo ci = new CultureInfo("DE-de");
             NumberFormatInfo ni = ci.NumberFormat;
             ni.NumberDecimalSeparator = ".";
-
-            string result = date.ToString("yyyy-MM-dd") + " | " + ((Shop)(laden.SelectedItem)).id + " | " 
-                + ((Person)(person.SelectedItem)).id + " | " + Convert.ToInt32(einmalig.IsChecked);
-
+            string result = "INSERT INTO `rechnung`(datum,laden,person,einmalig) VALUES ('";
+            result += date.ToString("yyyy-MM-dd") + "'," + ((Shop)(laden.SelectedItem)).id + "," 
+                + ((Person)(person.SelectedItem)).id + "," + Convert.ToInt32(einmalig.IsChecked) + ");";
+            result += "INSERT INTO `ausgaben`((bezeichnung,betrag,prod_gr,rechnungsnr) VALUES ('";
             List<TextBox> tb_list = new List<TextBox>();
             foreach(var zeile in _rechnungsPosten.Children)
             {
@@ -99,14 +99,14 @@ namespace Haushaltsbuch
                     {
                         betrag = Convert.ToDouble(bet.Text);
                         string b = string.Format(ni, "{0}", betrag);
-                        result += "\n" + bez.Text + " | " + b + " | " + ((Produktgruppe)kat.SelectedItem).id;
+                        result += bez.Text + "'," + b + "," + ((Produktgruppe)kat.SelectedItem).id + ",LAST_INSERT_ID()),";
                         tb_list.Add(bez);
                         tb_list.Add(bet);
                     }
                 }
             }
-            
-            
+
+            result.Remove(result.Length - 1);
             MessageBox.Show(result);
             Clear(tb_list.ToArray());
         }

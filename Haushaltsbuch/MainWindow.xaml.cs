@@ -37,10 +37,10 @@ namespace Haushaltsbuch
             this_month = new MonatsAnzeige(myHaushaltsbuch.monatsliste(0), ein);
             ein = (from pos in myHaushaltsbuch.einnahmen where pos.Datum.Month == DateTime.Now.Month-1 select pos.Betrag).Sum();
             last_month = new MonatsAnzeige(myHaushaltsbuch.monatsliste(1), ein);
-            thisWeek.Content = this_week.Dashboard;
-            lastWeek.Content = last_week.Dashboard;
-            thisMonth.Content = this_month.Dashboard;
-            lastMonth.Content = last_month.Dashboard;
+            thisWeek.Content = this_week.scrlAnzeige;
+            lastWeek.Content = last_week.scrlAnzeige;
+            thisMonth.Content = this_month.scrlAnzeige;
+            lastMonth.Content = last_month.scrlAnzeige;
 
             
         }

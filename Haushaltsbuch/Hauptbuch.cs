@@ -226,5 +226,13 @@ namespace Haushaltsbuch
             return temp;
         }
         
+        public int NeuerRechnungEintragen(string eintrag)
+        {
+            command.CommandText = eintrag;
+            connection.Open();
+            int result = command.ExecuteNonQuery();
+            connection.Close();
+            return result;
+        }
     }
 }
