@@ -17,8 +17,8 @@
             <MenuItem Header="Einkommen" Click="Einkommen_Click"/>
             <MenuItem Header="Suchen" Click="Suchen_CLick"/>
         </Menu>
-        <ScrollViewer VerticalScrollBarVisibility="Visible" Name="scrlbar" DockPanel.Dock="Top" Visibility="Visible">
-            <TabControl Name="uebersicht">
+        <!--<ScrollViewer VerticalScrollBarVisibility="Visible" Name="scrlbar" DockPanel.Dock="Top" Visibility="Visible">-->
+            <TabControl Name="uebersicht" DockPanel.Dock="Top" Visibility="Visible">
                 <TabItem Header="This Week" Name="thisWeek" GotFocus="tabItem_GotFocus">
                     <!--<TextBox Name="textBox" Width="450" Height="300" VerticalScrollBarVisibility="Auto"/>-->
                     <!--<ScrollViewer Name="scrlbar" VerticalScrollBarVisibility="Auto"></ScrollViewer>-->
@@ -27,7 +27,7 @@
                 <TabItem Header="This Month" Name="thisMonth" GotFocus="tabItem_GotFocus"></TabItem>
                 <TabItem Header="Last Month" Name="lastMonth" GotFocus="tabItem_GotFocus"></TabItem>
             </TabControl>
-        </ScrollViewer>
+        <!--</ScrollViewer>-->
         <Grid Name="grdEinkommen" Visibility="Collapsed" DockPanel.Dock="Top">
             <Grid.RowDefinitions>
                 <RowDefinition/>

@@ -47,7 +47,7 @@ namespace Haushaltsbuch
 
         private void Uebersicht_Click(object sender, RoutedEventArgs e)
         {
-            scrlbar.Visibility = Visibility.Visible;
+            uebersicht.Visibility = Visibility.Visible;//scrbar
             grdEinkommen.Visibility = Visibility.Collapsed;
             tbcEintrag.Visibility = Visibility.Collapsed;            
         }
@@ -55,7 +55,7 @@ namespace Haushaltsbuch
         private void Eintrag_Click(object sender, RoutedEventArgs e)
         {
             tbcEintrag.Visibility = Visibility.Visible;
-            scrlbar.Visibility = Visibility.Collapsed;
+            uebersicht.Visibility = Visibility.Collapsed;//scrbar
             grdEinkommen.Visibility = Visibility.Collapsed;            
         }
 
@@ -66,7 +66,8 @@ namespace Haushaltsbuch
 
             var PrevMonEin = from einnahmen in myHaushaltsbuch.einnahmen where einnahmen.Datum.Month == DateTime.Now.Month -1 select einnahmen;
             UebersichtEinkommen("Einkommen vorherigen Monat", stckEinkommenPrev, PrevMonEin);
-            Eintrag eintrag = new Eintrag(myHaushaltsbuch.AlleLaeden, myHaushaltsbuch.Kategorien);
+            // Eintrag eintrag = new Eintrag(myHaushaltsbuch.AlleLaeden, myHaushaltsbuch.Kategorien);
+            Eintrag eintrag = new Eintrag(myHaushaltsbuch);
             tbiRechnung.Content = eintrag.NeuerRechnung(myHaushaltsbuch.familienmitglied);
             tbiShop.Content = eintrag.NeuerLaden();
             tbiProdgr.Content = eintrag.NeuerKategorie();
@@ -92,7 +93,7 @@ namespace Haushaltsbuch
         private void Einkommen_Click(object sender, RoutedEventArgs e)
         {
             grdEinkommen.Visibility = Visibility.Visible;
-            scrlbar.Visibility = Visibility.Collapsed;
+            uebersicht.Visibility = Visibility.Collapsed; //scrbar
             tbcEintrag.Visibility = Visibility.Collapsed;
         }
 

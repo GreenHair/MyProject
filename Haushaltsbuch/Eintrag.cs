@@ -18,11 +18,16 @@ namespace Haushaltsbuch
         private StackPanel stckZeileKategorie;
         private List<Shop> Laeden;
         private List<Produktgruppe> Prodgr;
+        private Hauptbuch _haushaltsbuch;
 
-        public Eintrag(List<Shop> _laeden, List<Produktgruppe> _prodgr)
+       // public Eintrag(List<Shop> _laeden, List<Produktgruppe> _prodgr)
+        public Eintrag(Hauptbuch haushalt)
         {
-            Laeden = _laeden;
-            Prodgr = _prodgr;
+            //Laeden = _laeden;
+            //Prodgr = _prodgr;
+            Laeden = haushalt.AlleLaeden;
+            Prodgr = haushalt.Kategorien;
+            _haushaltsbuch = haushalt;
         }
 
         public ScrollViewer NeuerRechnung(List<Person> Familie)
@@ -108,6 +113,7 @@ namespace Haushaltsbuch
 
             result.Remove(result.Length - 1);
             MessageBox.Show(result);
+            //_haushaltsbuch.NeuerRechnungEintragen(result);
             Clear(tb_list.ToArray());
         }
 

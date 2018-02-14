@@ -49,14 +49,6 @@ namespace Haushaltsbuch {
         #line hidden
         
         
-        #line 20 "..\..\MainWindow.xaml"
-        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
-        internal System.Windows.Controls.ScrollViewer scrlbar;
-        
-        #line default
-        #line hidden
-        
-        
         #line 21 "..\..\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.TabControl uebersicht;
@@ -226,12 +218,9 @@ namespace Haushaltsbuch {
             #line hidden
             return;
             case 7:
-            this.scrlbar = ((System.Windows.Controls.ScrollViewer)(target));
-            return;
-            case 8:
             this.uebersicht = ((System.Windows.Controls.TabControl)(target));
             return;
-            case 9:
+            case 8:
             this.thisWeek = ((System.Windows.Controls.TabItem)(target));
             
             #line 22 "..\..\MainWindow.xaml"
@@ -240,7 +229,7 @@ namespace Haushaltsbuch {
             #line default
             #line hidden
             return;
-            case 10:
+            case 9:
             this.lastWeek = ((System.Windows.Controls.TabItem)(target));
             
             #line 26 "..\..\MainWindow.xaml"
@@ -249,7 +238,7 @@ namespace Haushaltsbuch {
             #line default
             #line hidden
             return;
-            case 11:
+            case 10:
             this.thisMonth = ((System.Windows.Controls.TabItem)(target));
             
             #line 27 "..\..\MainWindow.xaml"
@@ -258,7 +247,7 @@ namespace Haushaltsbuch {
             #line default
             #line hidden
             return;
-            case 12:
+            case 11:
             this.lastMonth = ((System.Windows.Controls.TabItem)(target));
             
             #line 28 "..\..\MainWindow.xaml"
@@ -267,25 +256,25 @@ namespace Haushaltsbuch {
             #line default
             #line hidden
             return;
-            case 13:
+            case 12:
             this.grdEinkommen = ((System.Windows.Controls.Grid)(target));
             return;
-            case 14:
+            case 13:
             this.stckEinkommen = ((System.Windows.Controls.StackPanel)(target));
             return;
-            case 15:
+            case 14:
             this.stckEinkommenPrev = ((System.Windows.Controls.StackPanel)(target));
             return;
-            case 16:
+            case 15:
             this.tbcEintrag = ((System.Windows.Controls.TabControl)(target));
             return;
-            case 17:
+            case 16:
             this.tbiRechnung = ((System.Windows.Controls.TabItem)(target));
             return;
-            case 18:
+            case 17:
             this.tbiShop = ((System.Windows.Controls.TabItem)(target));
             return;
-            case 19:
+            case 18:
             this.tbiProdgr = ((System.Windows.Controls.TabItem)(target));
             return;
             }
