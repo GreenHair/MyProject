@@ -79,13 +79,13 @@ namespace Haushaltsbuch
         private void tabItem_GotFocus(object sender, RoutedEventArgs e)
         {
             //if(thisWeek.IsFocused == false)
-                scrlbar.ScrollToTop();
+               // scrlbar.ScrollToTop();
             switch (((TabItem)sender).Name)
             {
-                case "thisWeek": this_week.diagrammAnimiert(); break;
-                case "lastWeek": last_week.diagrammAnimiert(); break;
-                case "lastMonth": last_month.diagrammAnimiert(); break;
-                case "thisMonth": this_month.diagrammAnimiert(); break;
+                case "thisWeek": this_week.scrlAnzeige.ScrollToTop(); this_week.diagrammAnimiert(); break;
+                case "lastWeek": last_week.scrlAnzeige.ScrollToTop(); last_week.diagrammAnimiert(); break;
+                case "lastMonth": last_month.scrlAnzeige.ScrollToTop(); last_month.diagrammAnimiert(); break;
+                case "thisMonth": this_month.scrlAnzeige.ScrollToTop(); this_month.diagrammAnimiert(); break;
             }
             
         }
