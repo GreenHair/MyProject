@@ -9,8 +9,10 @@ using System.Windows.Controls;
 
 namespace Haushaltsbuch
 {
+    public delegate int DelInsert(string mysqlcommand);
     class Eintrag
     {
+        public event DelInsert Insert;
         private StackPanel _zeileRechnung;
         private StackPanel _rechnungsPosten;
         public StackPanel stckRechnung { get; private set; }
@@ -62,7 +64,7 @@ namespace Haushaltsbuch
                 FontSize = 18,
                 FontWeight = FontWeights.DemiBold
             });
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 30; i++)
             {
                 StackPanel ZeilePosten = new StackPanel { Orientation = Orientation.Horizontal };
                 ZeilePosten.Children.Add(new TextBox { Text = "", Width = 200 });
@@ -86,10 +88,10 @@ namespace Haushaltsbuch
             CultureInfo ci = new CultureInfo("DE-de");
             NumberFormatInfo ni = ci.NumberFormat;
             ni.NumberDecimalSeparator = ".";
-            string result = "INSERT INTO `rechnung1`(datum,laden,person,einmalig) VALUES ('";
+            string result = "INSERT INTO `rechnung`(datum,laden,person,einmalig) VALUES ('";
             result += date.ToString("yyyy-MM-dd") + "'," + ((Shop)(laden.SelectedItem)).id + "," 
                 + ((Person)(person.SelectedItem)).id + "," + Convert.ToInt32(einmalig.IsChecked) + ");";
-            result += "INSERT INTO `ausgaben1`(bezeichnung,betrag,prod_gr,rechnungsnr) VALUES ";
+            result += "INSERT INTO `ausgaben`(bezeichnung,betrag,prod_gr,rechnungsnr) VALUES ";
             List<TextBox> tb_list = new List<TextBox>();
             foreach(var zeile in _rechnungsPosten.Children)
             {
@@ -112,9 +114,9 @@ namespace Haushaltsbuch
             }
 
             result = result.Remove(result.Length - 1);
-            MessageBox.Show(result);
-            _haushaltsbuch.NeuerRechnungEintragen(result);
-            Clear(tb_list.ToArray());
+            //MessageBox.Show(result);
+            int? rowsaffected = Insert?.Invoke(result);
+            if(rowsaffected > 0) Clear(tb_list.ToArray());
         }
 
         public StackPanel NeuerLaden()

@@ -63,16 +63,16 @@ namespace Haushaltsbuch
                 Produktgruppe p = new Produktgruppe(Reader[0], Reader[1], Reader[2]);
                 kategorien.Add(p);
             }
-            connection.Close();
+            Reader.Close();
 
-            _ausgaben = listeBauen("SELECT * FROM rechnung");
+            //_ausgaben = listeBauen("SELECT * FROM rechnung");
             
-            _dieseWoche = listeBauen("SELECT * FROM rechnung WHERE WEEK(rechnung.datum,1)=WEEK(CURRENT_DATE(),1)");
+            //_dieseWoche = listeBauen("SELECT * FROM rechnung WHERE WEEK(rechnung.datum,1)=WEEK(CURRENT_DATE(),1)");
 
-            _letzteWoche = listeBauen("SELECT * FROM rechnung WHERE WEEK(rechnung.datum,1)=WEEK(CURRENT_DATE(),1)-1");
+            //_letzteWoche = listeBauen("SELECT * FROM rechnung WHERE WEEK(rechnung.datum,1)=WEEK(CURRENT_DATE(),1)-1");
 
             command.CommandText = "SELECT * FROM einkommen";
-            connection.Open();
+           // connection.Open();
             Reader = command.ExecuteReader();
             while (Reader.Read())
             {
@@ -205,6 +205,36 @@ namespace Haushaltsbuch
             return temp;
         }
 
+        public List<Rechnung> GetRechnung_M()
+        {
+            string query = "SELECT * FROM `rechnung` WHERE MONTH(rechnung.datum) = MONTH(CURRENT_DATE())";
+            return listeBauen(query);
+        }
+
+        public List<Rechnung> GetRechnung_M(int i)
+        {
+            if (DateTime.Now.Month - i < 1)
+            {
+                i = 13 - i;
+            }
+            else
+            {
+                i = DateTime.Now.Month - i;
+            }
+            string query = "SELECT * FROM `rechnung` WHERE MONTH(rechnung.datum) = " + i;
+            return listeBauen(query);
+        }
+
+        public List<Rechnung> GetRechnung_W()
+        {
+            return listeBauen("SELECT * FROM rechnung WHERE WEEK(rechnung.datum,1)=WEEK(CURRENT_DATE(),1)");
+        }
+
+        public List<Rechnung> GetRechnung_W(int i)
+        {
+            return listeBauen("SELECT * FROM rechnung WHERE WEEK(rechnung.datum,1)=WEEK(CURRENT_DATE(),1)-" + i);
+        }
+
         public List<Rechnung> monatsliste(int i)
         {
             List<Rechnung> temp = new List<Rechnung>();
@@ -227,7 +257,7 @@ namespace Haushaltsbuch
             return temp;
         }
         
-        public int NeuerRechnungEintragen(string eintrag)
+        public int Eintragen(string eintrag)
         {
             command.CommandText = eintrag;
             connection.Open();

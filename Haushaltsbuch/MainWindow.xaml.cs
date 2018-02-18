@@ -31,12 +31,12 @@ namespace Haushaltsbuch
         {
             InitializeComponent();
             myHaushaltsbuch = new Hauptbuch();
-            this_week = new Anzeige(myHaushaltsbuch.dieseWoche);
-            last_week = new Anzeige(myHaushaltsbuch.LetzteWoche);
+            this_week = new Anzeige(myHaushaltsbuch.GetRechnung_W());
+            last_week = new Anzeige(myHaushaltsbuch.GetRechnung_W(1));
             double ein = (from pos in myHaushaltsbuch.einnahmen where pos.Datum.Month == DateTime.Now.Month select pos.Betrag).Sum();
-            this_month = new MonatsAnzeige(myHaushaltsbuch.monatsliste(0), ein);
+            this_month = new MonatsAnzeige(myHaushaltsbuch.GetRechnung_M(), ein);
             ein = (from pos in myHaushaltsbuch.einnahmen where pos.Datum.Month == DateTime.Now.Month-1 select pos.Betrag).Sum();
-            last_month = new MonatsAnzeige(myHaushaltsbuch.monatsliste(1), ein);
+            last_month = new MonatsAnzeige(myHaushaltsbuch.GetRechnung_M(1), ein);
             thisWeek.Content = this_week.scrlAnzeige;
             lastWeek.Content = last_week.scrlAnzeige;
             thisMonth.Content = this_month.scrlAnzeige;
@@ -71,15 +71,31 @@ namespace Haushaltsbuch
             tbiRechnung.Content = eintrag.NeuerRechnung(myHaushaltsbuch.familienmitglied);
             tbiShop.Content = eintrag.NeuerLaden();
             tbiProdgr.Content = eintrag.NeuerKategorie();
-
+            eintrag.Insert += Eintrag_Insert;
             this_week.diagrammAnimiert();
             
         }
 
+        private int Eintrag_Insert(string mysqlcommand)
+        {
+            int result = myHaushaltsbuch.Eintragen(mysqlcommand);
+            // TODO check refresh content,eventuell in function auslagern
+            this_week = new Anzeige(myHaushaltsbuch.GetRechnung_W());
+            last_week = new Anzeige(myHaushaltsbuch.GetRechnung_W(1));
+            double ein = (from pos in myHaushaltsbuch.einnahmen where pos.Datum.Month == DateTime.Now.Month select pos.Betrag).Sum();
+            this_month = new MonatsAnzeige(myHaushaltsbuch.GetRechnung_M(), ein);
+            ein = (from pos in myHaushaltsbuch.einnahmen where pos.Datum.Month == DateTime.Now.Month - 1 select pos.Betrag).Sum();
+            last_month = new MonatsAnzeige(myHaushaltsbuch.GetRechnung_M(1), ein);
+            thisWeek.Content = this_week.scrlAnzeige;
+            lastWeek.Content = last_week.scrlAnzeige;
+            thisMonth.Content = this_month.scrlAnzeige;
+            lastMonth.Content = last_month.scrlAnzeige;
+
+            return result;
+        }
+
         private void tabItem_GotFocus(object sender, RoutedEventArgs e)
         {
-            //if(thisWeek.IsFocused == false)
-               // scrlbar.ScrollToTop();
             switch (((TabItem)sender).Name)
             {
                 case "thisWeek": this_week.scrlAnzeige.ScrollToTop(); this_week.diagrammAnimiert(); break;
