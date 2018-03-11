@@ -26,6 +26,7 @@ namespace Haushaltsbuch
         Anzeige last_week;
         MonatsAnzeige this_month;
         MonatsAnzeige last_month;
+        Eintrag eintrag;
 
         public MainWindow()
         {
@@ -67,7 +68,7 @@ namespace Haushaltsbuch
             var PrevMonEin = from einnahmen in myHaushaltsbuch.einnahmen where einnahmen.Datum.Month == DateTime.Now.Month -1 select einnahmen;
             UebersichtEinkommen("Einkommen vorherigen Monat", stckEinkommenPrev, PrevMonEin);
             // Eintrag eintrag = new Eintrag(myHaushaltsbuch.AlleLaeden, myHaushaltsbuch.Kategorien);
-            Eintrag eintrag = new Eintrag(myHaushaltsbuch);
+            eintrag = new Eintrag(myHaushaltsbuch);
             tbiRechnung.Content = eintrag.NeuerRechnung(myHaushaltsbuch.familienmitglied);
             tbiShop.Content = eintrag.NeuerLaden();
             tbiProdgr.Content = eintrag.NeuerKategorie();
@@ -76,10 +77,11 @@ namespace Haushaltsbuch
             
         }
 
-        private int Eintrag_Insert(string mysqlcommand)
+        private int Eintrag_Insert(MySqlCommand mysqlcommand)
         {
             int result = myHaushaltsbuch.Eintragen(mysqlcommand);
             // TODO check refresh content,eventuell in function auslagern
+            tbiRechnung.Content = eintrag.NeuerRechnung(myHaushaltsbuch.familienmitglied);
             this_week = new Anzeige(myHaushaltsbuch.GetRechnung_W());
             last_week = new Anzeige(myHaushaltsbuch.GetRechnung_W(1));
             double ein = (from pos in myHaushaltsbuch.einnahmen where pos.Datum.Month == DateTime.Now.Month select pos.Betrag).Sum();

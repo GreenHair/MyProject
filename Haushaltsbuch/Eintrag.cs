@@ -6,10 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using NummerfeldTest;
+using MySql.Data.MySqlClient;
 
 namespace Haushaltsbuch
 {
-    public delegate int DelInsert(string mysqlcommand);
+    public delegate int DelInsert(MySqlCommand mysqlcommand);
     class Eintrag
     {
         public event DelInsert Insert;
@@ -47,7 +49,7 @@ namespace Haushaltsbuch
                 FontWeight = FontWeights.DemiBold
             };
             Zeile1.Children.Add(Titel);
-            Button btnRechnung = new Button { HorizontalAlignment = HorizontalAlignment.Right, Content = "OK", Width = 100 };
+            Button btnRechnung = new Button { HorizontalAlignment = HorizontalAlignment.Right, Content = "OK", Width = 100, Height = 25 };
             btnRechnung.Click += BtnRechnung_Click;
             Grid.SetColumn(btnRechnung, 1);
             Zeile1.Children.Add(btnRechnung);
@@ -65,10 +67,11 @@ namespace Haushaltsbuch
                 FontWeight = FontWeights.DemiBold
             });
             for (int i = 0; i < 30; i++)
-            {
+            {                
                 StackPanel ZeilePosten = new StackPanel { Orientation = Orientation.Horizontal };
                 ZeilePosten.Children.Add(new TextBox { Text = "", Width = 200 });
-                ZeilePosten.Children.Add(new TextBox { Text = "", Width = 100, HorizontalContentAlignment = HorizontalAlignment.Right });
+                ZeilePosten.Children.Add(new NumberInput { Width = 100, HorizontalContentAlignment = HorizontalAlignment.Right });
+               // ZeilePosten.Children.Add(new TextBox { Text = "", Width = 100, HorizontalContentAlignment = HorizontalAlignment.Right });
                 ZeilePosten.Children.Add(new Label { Content = "€" });
                 ZeilePosten.Children.Add(new ComboBox { ItemsSource = Prodgr,Width = 100, Text = "Produktgruppe" });
                 _rechnungsPosten.Children.Add(ZeilePosten);
@@ -85,37 +88,53 @@ namespace Haushaltsbuch
             ComboBox person = _zeileRechnung.Children[2] as ComboBox;
             CheckBox einmalig = _zeileRechnung.Children[3] as CheckBox;
             DateTime date = Convert.ToDateTime(datum.SelectedDate);
+
             CultureInfo ci = new CultureInfo("DE-de");
             NumberFormatInfo ni = ci.NumberFormat;
             ni.NumberDecimalSeparator = ".";
+
             string result = "INSERT INTO `rechnung`(datum,laden,person,einmalig) VALUES ('";
             result += date.ToString("yyyy-MM-dd") + "'," + ((Shop)(laden.SelectedItem)).id + "," 
                 + ((Person)(person.SelectedItem)).id + "," + Convert.ToInt32(einmalig.IsChecked) + ");";
             result += "INSERT INTO `ausgaben`(bezeichnung,betrag,prod_gr,rechnungsnr) VALUES ";
+
             List<TextBox> tb_list = new List<TextBox>();
-            foreach(var zeile in _rechnungsPosten.Children)
+            MySqlCommand comm = new MySqlCommand();
+            int i = 1;
+
+            foreach (var zeile in _rechnungsPosten.Children)
             {
                 if(zeile is StackPanel)
                 {
                     StackPanel row = zeile as StackPanel;
                     TextBox bez = row.Children[0] as TextBox;
-                    TextBox bet = row.Children[1] as TextBox;
+                    NumberInput bet = row.Children[1] as NumberInput;
                     ComboBox kat = row.Children[3] as ComboBox;
                     double betrag;
                     if (bez.Text != "" && bez.Text != null)
                     {
                         betrag = Convert.ToDouble(bet.Text);
                         string b = string.Format(ni, "{0}", betrag);
-                        result += "('" +bez.Text + "'," + b + "," + ((Produktgruppe)kat.SelectedItem).id + ",LAST_INSERT_ID()),";
+                        // result += "('" +bez.Text + "'," + b + "," + ((Produktgruppe)kat.SelectedItem).id + ",LAST_INSERT_ID()),";
+                        result += "(@bezeichnung"+i+",@betrag"+i+"," + ((Produktgruppe)kat.SelectedItem).id + ",LAST_INSERT_ID()),";
+                        MySqlParameter par_bez = new MySqlParameter("@bezeichnung"+i, MySqlDbType.VarChar);
+                        par_bez.Value = bez.Text;
+                        comm.Parameters.Add(par_bez);
+                        MySqlParameter par_bet = new MySqlParameter("@betrag"+i, MySqlDbType.Double, 0);
+                        par_bet.Value = betrag;
+                        comm.Parameters.Add(par_bet);
+                        i++;
                         tb_list.Add(bez);
-                        tb_list.Add(bet);
+                        //tb_list.Add(bet);
                     }
                 }
             }
 
             result = result.Remove(result.Length - 1);
             //MessageBox.Show(result);
-            int? rowsaffected = Insert?.Invoke(result);
+            comm.CommandText = result;
+            
+            int? rowsaffected = Insert?.Invoke(comm);
             if(rowsaffected > 0) Clear(tb_list.ToArray());
         }
 

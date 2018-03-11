@@ -32,8 +32,14 @@ namespace Haushaltsbuch
         {
             
             command.CommandText = "SELECT * FROM familienmitglied";
-            
-            connection.Open();
+            try
+            {
+                connection.Open();
+            }
+            catch(MySqlException e)
+            {
+                MessageBox.Show(e.Message);
+            }
             Reader = command.ExecuteReader(); 
            
             while (Reader.Read())
@@ -257,11 +263,12 @@ namespace Haushaltsbuch
             return temp;
         }
         
-        public int Eintragen(string eintrag)
+        public int Eintragen(MySqlCommand comm)
         {
-            command.CommandText = eintrag;
+            comm.Connection = connection;            
             connection.Open();
-            int result = command.ExecuteNonQuery();
+            comm.Prepare();
+            int result = comm.ExecuteNonQuery();
             connection.Close();
             return result;
         }
