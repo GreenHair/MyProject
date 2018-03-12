@@ -34,6 +34,10 @@ namespace NummerfeldTest
             {
                 return txtBox.Text;
             }
+            set
+            {
+                txtBox.Text = value;
+            }
         }
 
         private void txtBox_PreviewTextInput(object sender, TextCompositionEventArgs e)

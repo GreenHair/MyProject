@@ -35,57 +35,58 @@ namespace Haushaltsbuch
             try
             {
                 connection.Open();
+            
+                Reader = command.ExecuteReader(); 
+           
+                while (Reader.Read())
+                {
+                    Person p = new Person(Reader["ID"], Reader["vorname"], Reader["nachname"]);
+                    _familienmitglied.Add(p);
+                }
+                Reader.Close();
+
+                command.CommandText = "SELECT * FROM laden";
+                //connection.Open();
+                Reader = command.ExecuteReader();
+
+                while (Reader.Read())
+                {
+                    Shop l = new Shop(Reader[0], Reader[1], Reader[2]);
+                    alleLaeden.Add(l);
+                }
+                Reader.Close();
+
+                command.CommandText = "SELECT * FROM produktgruppe";
+               // connection.Open();
+                Reader = command.ExecuteReader();
+
+                while (Reader.Read())
+                {
+                    Produktgruppe p = new Produktgruppe(Reader[0], Reader[1], Reader[2]);
+                    kategorien.Add(p);
+                }
+                Reader.Close();
+
+                //_ausgaben = listeBauen("SELECT * FROM rechnung");
+            
+                //_dieseWoche = listeBauen("SELECT * FROM rechnung WHERE WEEK(rechnung.datum,1)=WEEK(CURRENT_DATE(),1)");
+
+                //_letzteWoche = listeBauen("SELECT * FROM rechnung WHERE WEEK(rechnung.datum,1)=WEEK(CURRENT_DATE(),1)-1");
+
+                command.CommandText = "SELECT * FROM einkommen";
+               // connection.Open();
+                Reader = command.ExecuteReader();
+                while (Reader.Read())
+                {
+                    Einkommen e = new Einkommen(Reader[0], Reader[1], Reader[2], _familienmitglied[Convert.ToInt32(Reader[3])-1], Reader[4]);
+                    _einnahmen.Add(e);
+                }
+               // connection.Close();
             }
-            catch(MySqlException e)
+            catch (MySqlException e)
             {
                 MessageBox.Show(e.Message);
             }
-            Reader = command.ExecuteReader(); 
-           
-            while (Reader.Read())
-            {
-                Person p = new Person(Reader["ID"], Reader["vorname"], Reader["nachname"]);
-                _familienmitglied.Add(p);
-            }
-            Reader.Close();
-
-            command.CommandText = "SELECT * FROM laden";
-            //connection.Open();
-            Reader = command.ExecuteReader();
-
-            while (Reader.Read())
-            {
-                Shop l = new Shop(Reader[0], Reader[1], Reader[2]);
-                alleLaeden.Add(l);
-            }
-            Reader.Close();
-
-            command.CommandText = "SELECT * FROM produktgruppe";
-           // connection.Open();
-            Reader = command.ExecuteReader();
-
-            while (Reader.Read())
-            {
-                Produktgruppe p = new Produktgruppe(Reader[0], Reader[1], Reader[2]);
-                kategorien.Add(p);
-            }
-            Reader.Close();
-
-            //_ausgaben = listeBauen("SELECT * FROM rechnung");
-            
-            //_dieseWoche = listeBauen("SELECT * FROM rechnung WHERE WEEK(rechnung.datum,1)=WEEK(CURRENT_DATE(),1)");
-
-            //_letzteWoche = listeBauen("SELECT * FROM rechnung WHERE WEEK(rechnung.datum,1)=WEEK(CURRENT_DATE(),1)-1");
-
-            command.CommandText = "SELECT * FROM einkommen";
-           // connection.Open();
-            Reader = command.ExecuteReader();
-            while (Reader.Read())
-            {
-                Einkommen e = new Einkommen(Reader[0], Reader[1], Reader[2], _familienmitglied[Convert.ToInt32(Reader[3])-1], Reader[4]);
-                _einnahmen.Add(e);
-            }
-            connection.Close();
         }
 
         public List<Rechnung> ausgaben
@@ -186,28 +187,31 @@ namespace Haushaltsbuch
         {
             List<Rechnung> temp = new List<Rechnung>();
             command.CommandText = queryString;
-            connection.Open();
-            Reader = command.ExecuteReader();
-            while (Reader.Read())
+            //connection.Open();
+            if (connection.State == System.Data.ConnectionState.Open)
             {
-                Rechnung r = new Rechnung(Reader[0], alleLaeden[Convert.ToInt32(Reader[1]) - 1], Reader[2], Reader[3], _familienmitglied[Convert.ToInt32(Reader[4]) - 1]);
-                temp.Add(r);
-            }
-            Reader.Close();
-
-            foreach (Rechnung kassenzettel in temp)
-            {
-                command.CommandText = "SELECT * FROM ausgaben WHERE rechnungsnr=" + kassenzettel.id;
-                //connection.Open();
                 Reader = command.ExecuteReader();
                 while (Reader.Read())
                 {
-                    Posten p = new Posten(Reader[0], Reader[1], Reader[2], kategorien[Convert.ToInt32(Reader[3]) - 1]);
-                    kassenzettel.items.Add(p);
+                    Rechnung r = new Rechnung(Reader[0], alleLaeden[Convert.ToInt32(Reader[1]) - 1], Reader[2], Reader[3], _familienmitglied[Convert.ToInt32(Reader[4]) - 1]);
+                    temp.Add(r);
                 }
                 Reader.Close();
+
+                foreach (Rechnung kassenzettel in temp)
+                {
+                    command.CommandText = "SELECT * FROM ausgaben WHERE rechnungsnr=" + kassenzettel.id;
+                    //connection.Open();
+                    Reader = command.ExecuteReader();
+                    while (Reader.Read())
+                    {
+                        Posten p = new Posten(Reader[0], Reader[1], Reader[2], kategorien[Convert.ToInt32(Reader[3]) - 1]);
+                        kassenzettel.items.Add(p);
+                    }
+                    Reader.Close();
+                }
+                //connection.Close();
             }
-            connection.Close();
             return temp;
         }
 
@@ -266,11 +270,16 @@ namespace Haushaltsbuch
         public int Eintragen(MySqlCommand comm)
         {
             comm.Connection = connection;            
-            connection.Open();
+            //connection.Open();
             comm.Prepare();
             int result = comm.ExecuteNonQuery();
-            connection.Close();
+            //connection.Close();
             return result;
+        }
+
+        ~Hauptbuch()
+        {
+            connection.Close();
         }
     }
 }

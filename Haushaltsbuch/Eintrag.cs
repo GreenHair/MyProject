@@ -51,6 +51,7 @@ namespace Haushaltsbuch
             Zeile1.Children.Add(Titel);
             Button btnRechnung = new Button { HorizontalAlignment = HorizontalAlignment.Right, Content = "OK", Width = 100, Height = 25 };
             btnRechnung.Click += BtnRechnung_Click;
+            btnRechnung.IsEnabled = (Laeden.Count > 0) ? true : false;
             Grid.SetColumn(btnRechnung, 1);
             Zeile1.Children.Add(btnRechnung);
             stckRechnung.Children.Add(Zeile1);
@@ -125,7 +126,7 @@ namespace Haushaltsbuch
                         comm.Parameters.Add(par_bet);
                         i++;
                         tb_list.Add(bez);
-                        //tb_list.Add(bet);
+                        tb_list.Add(bet.txtBox);
                     }
                 }
             }
