@@ -136,7 +136,7 @@ namespace Haushaltsbuch
             comm.CommandText = result;
             
             int? rowsaffected = Insert?.Invoke(comm);
-            if(rowsaffected > 0) Clear(tb_list.ToArray());
+           // if(rowsaffected > 0) Clear(tb_list.ToArray());
         }
 
         public StackPanel NeuerLaden()
