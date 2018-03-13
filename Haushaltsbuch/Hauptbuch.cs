@@ -30,12 +30,11 @@ namespace Haushaltsbuch
 
         public Hauptbuch()
         {
-            
-            command.CommandText = "SELECT * FROM familienmitglied";
             try
             {
                 connection.Open();
-            
+
+                command.CommandText = "SELECT * FROM familienmitglied";
                 Reader = command.ExecuteReader(); 
            
                 while (Reader.Read())
@@ -265,6 +264,62 @@ namespace Haushaltsbuch
                 temp.Add(item);
             }
 
+            return temp;
+        }
+
+        public List<Person> GetFamilie()
+        {
+            List<Person> temp = new List<Person>();
+            command.CommandText = "SELECT * FROM familienmitglied";
+            Reader = command.ExecuteReader();
+            while (Reader.Read())
+            {
+                Person p = new Person(Reader["ID"], Reader["vorname"], Reader["nachname"]);
+                temp.Add(p);
+            }
+            Reader.Close();
+            return temp;
+        }
+
+        public List<Shop> GetLaeden()
+        {
+            List<Shop> temp = new List<Shop>();
+            command.CommandText = "SELECT * FROM laden";
+            Reader = command.ExecuteReader();
+            while (Reader.Read())
+            {
+                Shop l = new Shop(Reader[0], Reader[1], Reader[2]);
+                temp.Add(l);
+            }
+            Reader.Close();
+            return temp;
+        }
+
+        public List<Produktgruppe> GetKategorien()
+        {
+            List<Produktgruppe> temp = new List<Produktgruppe>();
+            command.CommandText = "SELECT * FROM produktgruppe";
+            Reader = command.ExecuteReader();
+            while (Reader.Read())
+            {
+                Produktgruppe p = new Produktgruppe(Reader[0], Reader[1], Reader[2]);
+                kategorien.Add(p);
+            }
+            Reader.Close();
+            return temp;
+        }
+
+        public List<Einkommen> GetEinkommen()
+        {
+            List<Einkommen> temp = new List<Einkommen>();
+            command.CommandText = "SELECT * FROM einkommen";
+            Reader = command.ExecuteReader();
+            while (Reader.Read())
+            {
+                Einkommen e = new Einkommen(Reader[0], Reader[1], Reader[2], _familienmitglied[Convert.ToInt32(Reader[3]) - 1], Reader[4]);
+                _einnahmen.Add(e);
+            }
+            Reader.Close();
             return temp;
         }
         
