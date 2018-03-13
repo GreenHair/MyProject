@@ -21,6 +21,8 @@ namespace NummerfeldTest
     /// </summary>
     public partial class NumberInput : UserControl
     {
+        Regex number_regex = new Regex("([0-9])");
+        Regex komma_regex = new Regex("([0-9,])");
         bool komma = false;
         public NumberInput(int breite = 100)
         {
@@ -32,7 +34,7 @@ namespace NummerfeldTest
         {
             get
             {
-                return txtBox.Text;
+                return txtBox.Text.Replace(" ", "");
             }
             set
             {
@@ -49,16 +51,18 @@ namespace NummerfeldTest
         {
 
             if (komma)
-            {
-                Regex regex = new Regex("([0-9])");
-                return regex.IsMatch(text);
+            {                
+                return number_regex.IsMatch(text);
             }
             else
-            {
-                komma = new Regex(",").IsMatch(text);
-                Regex regex = new Regex("([0-9,])");
-                return regex.IsMatch(text);
+            {                                
+                return komma_regex.IsMatch(text);
             }
+        }
+
+        private void txtBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            komma = txtBox.Text.Contains(",");
         }
     }
 }
