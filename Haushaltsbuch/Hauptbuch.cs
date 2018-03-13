@@ -81,6 +81,7 @@ namespace Haushaltsbuch
                     Einkommen e = new Einkommen(Reader[0], Reader[1], Reader[2], _familienmitglied[Convert.ToInt32(Reader[3])-1], Reader[4]);
                     _einnahmen.Add(e);
                 }
+                Reader.Close();
                // connection.Close();
             }
             catch (MySqlException e)

@@ -81,7 +81,7 @@ namespace Haushaltsbuch
         {
             int result = myHaushaltsbuch.Eintragen(mysqlcommand);
             // TODO check refresh content,eventuell in function auslagern
-           // tbiRechnung.Content = eintrag.NeuerRechnung(myHaushaltsbuch.familienmitglied);
+            tbiRechnung.Content = eintrag.NeuerRechnung(myHaushaltsbuch.familienmitglied);
             this_week = new Anzeige(myHaushaltsbuch.GetRechnung_W());
             last_week = new Anzeige(myHaushaltsbuch.GetRechnung_W(1));
             double ein = (from pos in myHaushaltsbuch.einnahmen where pos.Datum.Month == DateTime.Now.Month select pos.Betrag).Sum();
