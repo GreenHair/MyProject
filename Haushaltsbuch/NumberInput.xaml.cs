@@ -21,8 +21,8 @@ namespace NummerfeldTest
     /// </summary>
     public partial class NumberInput : UserControl
     {
-        Regex number_regex = new Regex("([0-9])");
-        Regex komma_regex = new Regex("([0-9,])");
+        Regex number_regex = new Regex("([0-9-])");
+        Regex komma_regex = new Regex("([0-9,-])");
         bool komma = false;
         public NumberInput(int breite = 100)
         {

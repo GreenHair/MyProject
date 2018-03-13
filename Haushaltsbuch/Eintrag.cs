@@ -125,8 +125,8 @@ namespace Haushaltsbuch
                         par_bet.Value = betrag;
                         comm.Parameters.Add(par_bet);
                         i++;
-                        tb_list.Add(bez);
-                        tb_list.Add(bet.txtBox);
+                       // tb_list.Add(bez);
+                       // tb_list.Add(bet.txtBox);
                     }
                 }
             }
@@ -162,6 +162,11 @@ namespace Haushaltsbuch
         {
             TextBox laden = stckZeileLaden.Children[0] as TextBox;
             CheckBox online = stckZeileLaden.Children[1] as CheckBox;
+            MySqlCommand comm = new MySqlCommand("insert into laden(name,online) values (@name," + Convert.ToInt32(online) + ")");
+            MySqlParameter param = new MySqlParameter("@name", MySqlDbType.VarChar);
+            param.Value = laden.Text;
+            comm.Parameters.Add(param);
+
             MessageBox.Show(Laeden.Count.ToString() + "," + laden.Text + "," + Convert.ToInt32(online));
             Clear(laden);
         }
