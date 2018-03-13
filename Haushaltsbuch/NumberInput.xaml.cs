@@ -34,7 +34,14 @@ namespace NummerfeldTest
         {
             get
             {
-                return txtBox.Text.Replace(" ", "");
+                txtBox.Text = txtBox.Text.Replace(" ", "");
+                string[] numbers = txtBox.Text.Split('-');
+                double result = Convert.ToDouble(numbers[0]);
+                for (int i = 1; i < numbers.Length; i++)
+                {
+                    result -= Convert.ToDouble(numbers[i]);
+                }
+                return result.ToString();
             }
             set
             {
@@ -55,14 +62,23 @@ namespace NummerfeldTest
                 return number_regex.IsMatch(text);
             }
             else
-            {                                
+            {
+                komma = text == ",";
                 return komma_regex.IsMatch(text);
             }
         }
 
         private void txtBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            komma = txtBox.Text.Contains(",");
+            if (txtBox.Text.Length == 0) { komma = false; }
+        }
+
+        private void txtBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.OemMinus || e.Key == Key.Subtract)
+            {
+                komma = false;
+            }
         }
     }
 }
