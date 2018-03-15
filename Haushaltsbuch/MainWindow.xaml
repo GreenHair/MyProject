@@ -16,6 +16,7 @@
             </MenuItem>
             <MenuItem Header="Einkommen" Click="Einkommen_Click"/>
             <MenuItem Header="Suchen" Click="Suchen_CLick"/>
+            <MenuItem Header="Verbinden" Click="Verbinden_Click"/>
         </Menu>
         <!--<ScrollViewer VerticalScrollBarVisibility="Visible" Name="scrlbar" DockPanel.Dock="Top" Visibility="Visible">-->
             <TabControl Name="uebersicht" DockPanel.Dock="Top" Visibility="Visible">

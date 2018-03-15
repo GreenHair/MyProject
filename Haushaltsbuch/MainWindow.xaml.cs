@@ -232,11 +232,44 @@ namespace Haushaltsbuch
             Tabelle.Children.Add(gesamtSumme);
             stckEinkommen.Children.Add(Tabelle);
         }
+        
+        private void Verbinden_Click(object sender, RoutedEventArgs e)
+        {
+            VerbindenFenster window = new VerbindenFenster();
+            window.Verbinden += Window_Verbinden;
+            window.ShowDialog();
+        }
+
+        private void Window_Verbinden(string connectstring)
+        {
+            string result = myHaushaltsbuch.Verbinden(connectstring);
+            MessageBox.Show(result);
+            if(result == "Verbunden") { RefreshContent(); }
+        }
+
+        private void RefreshContent()
+        {
+            myHaushaltsbuch.AlleLaeden = myHaushaltsbuch.GetLaeden();
+            myHaushaltsbuch.Kategorien = myHaushaltsbuch.GetKategorien();
+            myHaushaltsbuch.familienmitglied = myHaushaltsbuch.GetFamilie();
+            myHaushaltsbuch.einnahmen = myHaushaltsbuch.GetEinkommen();
+
+            this_week = new Anzeige(myHaushaltsbuch.GetRechnung_W());
+            last_week = new Anzeige(myHaushaltsbuch.GetRechnung_W(1));
+            double ein = (from pos in myHaushaltsbuch.einnahmen where pos.Datum.Month == DateTime.Now.Month select pos.Betrag).Sum();
+            this_month = new MonatsAnzeige(myHaushaltsbuch.GetRechnung_M(), ein);
+            ein = (from pos in myHaushaltsbuch.einnahmen where pos.Datum.Month == DateTime.Now.Month - 1 select pos.Betrag).Sum();
+            last_month = new MonatsAnzeige(myHaushaltsbuch.GetRechnung_M(1), ein);
+            thisWeek.Content = this_week.scrlAnzeige;
+            lastWeek.Content = last_week.scrlAnzeige;
+            thisMonth.Content = this_month.scrlAnzeige;
+            lastMonth.Content = last_month.scrlAnzeige;
+        }
 
         //private void uebersicht_SelectionChanged(object sender, SelectionChangedEventArgs e)
         //{
         //    // MessageBox.Show("TabItem gewwechselt zu " + uebersicht.SelectedIndex);
-            
+
         //    switch (((TabItem)(uebersicht.SelectedItem)).Name)
         //    {
         //        case "lastWeek": scrlbar.ScrollToTop(); last_week.diagrammAnimiert(); break;
