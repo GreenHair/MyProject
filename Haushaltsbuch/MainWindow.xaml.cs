@@ -22,6 +22,7 @@ namespace Haushaltsbuch
     public partial class MainWindow : Window
     {
         public Hauptbuch myHaushaltsbuch;// = new Hauptbuch();
+        WarteBalken progressbar;
         Anzeige this_week;
         Anzeige last_week;
         MonatsAnzeige this_month;
@@ -31,19 +32,21 @@ namespace Haushaltsbuch
         public MainWindow()
         {
             InitializeComponent();
-            myHaushaltsbuch = new Hauptbuch();
-            this_week = new Anzeige(myHaushaltsbuch.GetRechnung_W());
-            last_week = new Anzeige(myHaushaltsbuch.GetRechnung_W(1));
-            double ein = (from pos in myHaushaltsbuch.einnahmen where pos.Datum.Month == DateTime.Now.Month select pos.Betrag).Sum();
-            this_month = new MonatsAnzeige(myHaushaltsbuch.GetRechnung_M(), ein);
-            ein = (from pos in myHaushaltsbuch.einnahmen where pos.Datum.Month == DateTime.Now.Month-1 select pos.Betrag).Sum();
-            last_month = new MonatsAnzeige(myHaushaltsbuch.GetRechnung_M(1), ein);
-            thisWeek.Content = this_week.scrlAnzeige;
-            lastWeek.Content = last_week.scrlAnzeige;
-            thisMonth.Content = this_month.scrlAnzeige;
-            lastMonth.Content = last_month.scrlAnzeige;
+            progressbar = new WarteBalken();
+            progressbar.Show();
 
-            
+            //myHaushaltsbuch = new Hauptbuch();
+            //this_week = new Anzeige(myHaushaltsbuch.GetRechnung_W());
+            //last_week = new Anzeige(myHaushaltsbuch.GetRechnung_W(1));
+            //double ein = (from pos in myHaushaltsbuch.einnahmen where pos.Datum.Month == DateTime.Now.Month select pos.Betrag).Sum();
+            //this_month = new MonatsAnzeige(myHaushaltsbuch.GetRechnung_M(), ein);
+            //ein = (from pos in myHaushaltsbuch.einnahmen where pos.Datum.Month == DateTime.Now.Month - 1 select pos.Betrag).Sum();
+            //last_month = new MonatsAnzeige(myHaushaltsbuch.GetRechnung_M(1), ein);
+            //thisWeek.Content = this_week.scrlAnzeige;
+            //lastWeek.Content = last_week.scrlAnzeige;
+            //thisMonth.Content = this_month.scrlAnzeige;
+            //lastMonth.Content = last_month.scrlAnzeige;
+
         }
 
         private void Uebersicht_Click(object sender, RoutedEventArgs e)
@@ -63,6 +66,20 @@ namespace Haushaltsbuch
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            myHaushaltsbuch = new Hauptbuch();
+            this_week = new Anzeige(myHaushaltsbuch.GetRechnung_W());
+            last_week = new Anzeige(myHaushaltsbuch.GetRechnung_W(1));
+            double ein = (from pos in myHaushaltsbuch.einnahmen where pos.Datum.Month == DateTime.Now.Month select pos.Betrag).Sum();
+            this_month = new MonatsAnzeige(myHaushaltsbuch.GetRechnung_M(), ein);
+            ein = (from pos in myHaushaltsbuch.einnahmen where pos.Datum.Month == DateTime.Now.Month - 1 select pos.Betrag).Sum();
+            last_month = new MonatsAnzeige(myHaushaltsbuch.GetRechnung_M(1), ein);
+            thisWeek.Content = this_week.scrlAnzeige;
+            lastWeek.Content = last_week.scrlAnzeige;
+            thisMonth.Content = this_month.scrlAnzeige;
+            lastMonth.Content = last_month.scrlAnzeige;
+
+            thisWeek.Loaded += ThisWeek_Loaded;
+
             var AktMonEin = from einnahmen in myHaushaltsbuch.einnahmen where einnahmen.Datum.Month == DateTime.Now.Month select einnahmen;
             UebersichtEinkommen("Einkommen aktueller Monat", stckEinkommen, AktMonEin);
 
@@ -76,8 +93,16 @@ namespace Haushaltsbuch
             eintrag.Insert += Eintrag_Insert;
             eintrag.InsertLaden += Eintrag_InsertLaden;
             eintrag.InsertKategorie += Eintrag_InsertKategorie;
-            this_week.diagrammAnimiert();
+
+            progressbar.Close();
+
+            //this_week.diagrammAnimiert();
             
+        }
+
+        private void ThisWeek_Loaded(object sender, RoutedEventArgs e)
+        {
+            this_week.diagrammAnimiert();
         }
 
         private int Eintrag_InsertKategorie(MySqlCommand mysqlcommand)
@@ -104,20 +129,24 @@ namespace Haushaltsbuch
 
         private int Eintrag_Insert(MySqlCommand mysqlcommand)
         {
+            progressbar.ShowDialog();
             int result = myHaushaltsbuch.Eintragen(mysqlcommand);
-            // TODO check refresh content,eventuell in function auslagern
-            tbiRechnung.Content = eintrag.NeuerRechnung(myHaushaltsbuch.familienmitglied);
-            this_week = new Anzeige(myHaushaltsbuch.GetRechnung_W());
-            last_week = new Anzeige(myHaushaltsbuch.GetRechnung_W(1));
-            double ein = (from pos in myHaushaltsbuch.einnahmen where pos.Datum.Month == DateTime.Now.Month select pos.Betrag).Sum();
-            this_month = new MonatsAnzeige(myHaushaltsbuch.GetRechnung_M(), ein);
-            ein = (from pos in myHaushaltsbuch.einnahmen where pos.Datum.Month == DateTime.Now.Month - 1 select pos.Betrag).Sum();
-            last_month = new MonatsAnzeige(myHaushaltsbuch.GetRechnung_M(1), ein);
-            thisWeek.Content = this_week.scrlAnzeige;
-            lastWeek.Content = last_week.scrlAnzeige;
-            thisMonth.Content = this_month.scrlAnzeige;
-            lastMonth.Content = last_month.scrlAnzeige;
-
+            if (result > 0)
+            {
+                // TODO check refresh content,eventuell in function auslagern
+                tbiRechnung.Content = eintrag.NeuerRechnung(myHaushaltsbuch.familienmitglied);
+                this_week = new Anzeige(myHaushaltsbuch.GetRechnung_W());
+                last_week = new Anzeige(myHaushaltsbuch.GetRechnung_W(1));
+                double ein = (from pos in myHaushaltsbuch.einnahmen where pos.Datum.Month == DateTime.Now.Month select pos.Betrag).Sum();
+                this_month = new MonatsAnzeige(myHaushaltsbuch.GetRechnung_M(), ein);
+                ein = (from pos in myHaushaltsbuch.einnahmen where pos.Datum.Month == DateTime.Now.Month - 1 select pos.Betrag).Sum();
+                last_month = new MonatsAnzeige(myHaushaltsbuch.GetRechnung_M(1), ein);
+                thisWeek.Content = this_week.scrlAnzeige;
+                lastWeek.Content = last_week.scrlAnzeige;
+                thisMonth.Content = this_month.scrlAnzeige;
+                lastMonth.Content = last_month.scrlAnzeige;
+            }
+            progressbar.Close();
             return result;
         }
 

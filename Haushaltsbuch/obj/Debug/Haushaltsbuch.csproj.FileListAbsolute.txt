@@ -32,3 +32,5 @@ D:\Users\vm\Source\Repos\MyProject\Haushaltsbuch\obj\Debug\NumberInput.baml
 D:\Users\vm\Source\Repos\MyProject\Haushaltsbuch\obj\Debug\Haushaltsbuch.g.resources
 D:\Users\vm\Source\Repos\MyProject\Haushaltsbuch\obj\Debug\Haushaltsbuch.Properties.Resources.resources
 D:\Users\vm\Source\Repos\MyProject\Haushaltsbuch\obj\Debug\Haushaltsbuch.csproj.GenerateResource.Cache
+D:\Users\vm\Source\Repos\MyProject\Haushaltsbuch\obj\Debug\WarteBalken.g.cs
+D:\Users\vm\Source\Repos\MyProject\Haushaltsbuch\obj\Debug\WarteBalken.baml
