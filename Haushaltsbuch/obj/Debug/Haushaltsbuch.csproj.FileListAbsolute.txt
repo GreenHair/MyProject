@@ -36,3 +36,7 @@ D:\Users\vm\Source\Repos\MyProject\Haushaltsbuch\obj\Debug\WarteBalken.g.cs
 D:\Users\vm\Source\Repos\MyProject\Haushaltsbuch\obj\Debug\WarteBalken.baml
 D:\Users\vm\Source\Repos\MyProject\Haushaltsbuch\obj\Debug\VerbindenFenster.g.cs
 D:\Users\vm\Source\Repos\MyProject\Haushaltsbuch\obj\Debug\VerbindenFenster.baml
+C:\Users\Auke Swen\documents\visual studio 2015\Projects\Haushaltsbuch\Haushaltsbuch\obj\Debug\VerbindenFenster.g.cs
+C:\Users\Auke Swen\documents\visual studio 2015\Projects\Haushaltsbuch\Haushaltsbuch\obj\Debug\WarteBalken.g.cs
+C:\Users\Auke Swen\documents\visual studio 2015\Projects\Haushaltsbuch\Haushaltsbuch\obj\Debug\VerbindenFenster.baml
+C:\Users\Auke Swen\documents\visual studio 2015\Projects\Haushaltsbuch\Haushaltsbuch\obj\Debug\WarteBalken.baml
