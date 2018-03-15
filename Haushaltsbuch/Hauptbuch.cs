@@ -173,6 +173,10 @@ namespace Haushaltsbuch
             {
                 return alleLaeden;
             }
+            set
+            {
+                alleLaeden = value;
+            }
         }
 
         public List<Produktgruppe> Kategorien
@@ -180,6 +184,10 @@ namespace Haushaltsbuch
             get
             {
                 return kategorien;
+            }
+            set
+            {
+                kategorien = value;
             }
         }
 

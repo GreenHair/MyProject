@@ -50,7 +50,8 @@ namespace Haushaltsbuch
         {
             uebersicht.Visibility = Visibility.Visible;//scrbar
             grdEinkommen.Visibility = Visibility.Collapsed;
-            tbcEintrag.Visibility = Visibility.Collapsed;            
+            tbcEintrag.Visibility = Visibility.Collapsed;
+            tabItem_GotFocus(uebersicht.SelectedItem, e);
         }
 
         private void Eintrag_Click(object sender, RoutedEventArgs e)
@@ -73,8 +74,32 @@ namespace Haushaltsbuch
             tbiShop.Content = eintrag.NeuerLaden();
             tbiProdgr.Content = eintrag.NeuerKategorie();
             eintrag.Insert += Eintrag_Insert;
+            eintrag.InsertLaden += Eintrag_InsertLaden;
+            eintrag.InsertKategorie += Eintrag_InsertKategorie;
             this_week.diagrammAnimiert();
             
+        }
+
+        private int Eintrag_InsertKategorie(MySqlCommand mysqlcommand)
+        {
+            int result = myHaushaltsbuch.Eintragen(mysqlcommand);
+            if (result > 0)
+            {
+                myHaushaltsbuch.Kategorien = myHaushaltsbuch.GetKategorien();
+                tbiRechnung.Content = eintrag.NeuerRechnung(myHaushaltsbuch.familienmitglied);
+            }
+            return result;
+        }
+
+        private int Eintrag_InsertLaden(MySqlCommand mysqlcommand)
+        {
+            int result = myHaushaltsbuch.Eintragen(mysqlcommand);
+            if (result > 0)
+            {
+                myHaushaltsbuch.AlleLaeden = myHaushaltsbuch.GetLaeden();
+                tbiRechnung.Content = eintrag.NeuerRechnung(myHaushaltsbuch.familienmitglied);
+            }
+            return result;
         }
 
         private int Eintrag_Insert(MySqlCommand mysqlcommand)
