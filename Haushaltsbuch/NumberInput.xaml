@@ -7,6 +7,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="30" d:DesignWidth="100">
     <Grid>
-        <TextBox Name="txtBox" PreviewTextInput="txtBox_PreviewTextInput" TextChanged="txtBox_TextChanged" KeyDown="txtBox_KeyDown"/>
+        <TextBox Name="txtBox" PreviewTextInput="txtBox_PreviewTextInput" TextChanged="txtBox_TextChanged" KeyDown="txtBox_KeyDown" HorizontalContentAlignment="Right"/>
     </Grid>
 </UserControl>

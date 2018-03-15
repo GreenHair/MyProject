@@ -163,7 +163,7 @@ namespace Haushaltsbuch
             TextBox laden = stckZeileLaden.Children[0] as TextBox;
             CheckBox online = stckZeileLaden.Children[1] as CheckBox;
             MySqlCommand comm = new MySqlCommand("insert into laden(name,online) values (@name," + Convert.ToInt32(online) + ")");
-            MySqlParameter param = new MySqlParameter("@name", MySqlDbType.VarChar);
+            MySqlParameter param = new MySqlParameter("@name", MySqlDbType.VarChar,20);
             param.Value = laden.Text;
             comm.Parameters.Add(param);
 
@@ -176,7 +176,7 @@ namespace Haushaltsbuch
             StackPanel stckKategorie = new StackPanel { HorizontalAlignment = HorizontalAlignment.Center };
             stckKategorie.Children.Add(new Label
             {
-                Content = "Neuer Laden",
+                Content = "Neuer Kategorie",
                 FontSize = 18,
                 FontWeight = FontWeights.DemiBold
             });
@@ -194,6 +194,7 @@ namespace Haushaltsbuch
         {
             TextBox kategorie = stckZeileLaden.Children[0] as TextBox;
             CheckBox essen = stckZeileLaden.Children[1] as CheckBox;
+            // bezeichnung varchar 20
             MessageBox.Show(Prodgr.Count.ToString() + "," + kategorie.Text + "," + Convert.ToInt32(essen));
             Clear(kategorie);
         }
