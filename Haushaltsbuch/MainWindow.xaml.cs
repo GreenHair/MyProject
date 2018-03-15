@@ -22,6 +22,7 @@ namespace Haushaltsbuch
     public partial class MainWindow : Window
     {
         public Hauptbuch myHaushaltsbuch;// = new Hauptbuch();
+        WarteBalken progressbar;
         Anzeige this_week;
         Anzeige last_week;
         MonatsAnzeige this_month;
@@ -31,26 +32,29 @@ namespace Haushaltsbuch
         public MainWindow()
         {
             InitializeComponent();
-            myHaushaltsbuch = new Hauptbuch();
-            this_week = new Anzeige(myHaushaltsbuch.GetRechnung_W());
-            last_week = new Anzeige(myHaushaltsbuch.GetRechnung_W(1));
-            double ein = (from pos in myHaushaltsbuch.einnahmen where pos.Datum.Month == DateTime.Now.Month select pos.Betrag).Sum();
-            this_month = new MonatsAnzeige(myHaushaltsbuch.GetRechnung_M(), ein);
-            ein = (from pos in myHaushaltsbuch.einnahmen where pos.Datum.Month == DateTime.Now.Month-1 select pos.Betrag).Sum();
-            last_month = new MonatsAnzeige(myHaushaltsbuch.GetRechnung_M(1), ein);
-            thisWeek.Content = this_week.scrlAnzeige;
-            lastWeek.Content = last_week.scrlAnzeige;
-            thisMonth.Content = this_month.scrlAnzeige;
-            lastMonth.Content = last_month.scrlAnzeige;
+            progressbar = new WarteBalken();
+            progressbar.Show();
 
-            
+            //myHaushaltsbuch = new Hauptbuch();
+            //this_week = new Anzeige(myHaushaltsbuch.GetRechnung_W());
+            //last_week = new Anzeige(myHaushaltsbuch.GetRechnung_W(1));
+            //double ein = (from pos in myHaushaltsbuch.einnahmen where pos.Datum.Month == DateTime.Now.Month select pos.Betrag).Sum();
+            //this_month = new MonatsAnzeige(myHaushaltsbuch.GetRechnung_M(), ein);
+            //ein = (from pos in myHaushaltsbuch.einnahmen where pos.Datum.Month == DateTime.Now.Month - 1 select pos.Betrag).Sum();
+            //last_month = new MonatsAnzeige(myHaushaltsbuch.GetRechnung_M(1), ein);
+            //thisWeek.Content = this_week.scrlAnzeige;
+            //lastWeek.Content = last_week.scrlAnzeige;
+            //thisMonth.Content = this_month.scrlAnzeige;
+            //lastMonth.Content = last_month.scrlAnzeige;
+
         }
 
         private void Uebersicht_Click(object sender, RoutedEventArgs e)
         {
             uebersicht.Visibility = Visibility.Visible;//scrbar
             grdEinkommen.Visibility = Visibility.Collapsed;
-            tbcEintrag.Visibility = Visibility.Collapsed;            
+            tbcEintrag.Visibility = Visibility.Collapsed;
+            tabItem_GotFocus(uebersicht.SelectedItem, e);
         }
 
         private void Eintrag_Click(object sender, RoutedEventArgs e)
@@ -62,26 +66,7 @@ namespace Haushaltsbuch
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var AktMonEin = from einnahmen in myHaushaltsbuch.einnahmen where einnahmen.Datum.Month == DateTime.Now.Month select einnahmen;
-            UebersichtEinkommen("Einkommen aktueller Monat", stckEinkommen, AktMonEin);
-
-            var PrevMonEin = from einnahmen in myHaushaltsbuch.einnahmen where einnahmen.Datum.Month == DateTime.Now.Month -1 select einnahmen;
-            UebersichtEinkommen("Einkommen vorherigen Monat", stckEinkommenPrev, PrevMonEin);
-            // Eintrag eintrag = new Eintrag(myHaushaltsbuch.AlleLaeden, myHaushaltsbuch.Kategorien);
-            eintrag = new Eintrag(myHaushaltsbuch);
-            tbiRechnung.Content = eintrag.NeuerRechnung(myHaushaltsbuch.familienmitglied);
-            tbiShop.Content = eintrag.NeuerLaden();
-            tbiProdgr.Content = eintrag.NeuerKategorie();
-            eintrag.Insert += Eintrag_Insert;
-            this_week.diagrammAnimiert();
-            
-        }
-
-        private int Eintrag_Insert(MySqlCommand mysqlcommand)
-        {
-            int result = myHaushaltsbuch.Eintragen(mysqlcommand);
-            // TODO check refresh content,eventuell in function auslagern
-            tbiRechnung.Content = eintrag.NeuerRechnung(myHaushaltsbuch.familienmitglied);
+            myHaushaltsbuch = new Hauptbuch();
             this_week = new Anzeige(myHaushaltsbuch.GetRechnung_W());
             last_week = new Anzeige(myHaushaltsbuch.GetRechnung_W(1));
             double ein = (from pos in myHaushaltsbuch.einnahmen where pos.Datum.Month == DateTime.Now.Month select pos.Betrag).Sum();
@@ -93,6 +78,75 @@ namespace Haushaltsbuch
             thisMonth.Content = this_month.scrlAnzeige;
             lastMonth.Content = last_month.scrlAnzeige;
 
+            thisWeek.Loaded += ThisWeek_Loaded;
+
+            var AktMonEin = from einnahmen in myHaushaltsbuch.einnahmen where einnahmen.Datum.Month == DateTime.Now.Month select einnahmen;
+            UebersichtEinkommen("Einkommen aktueller Monat", stckEinkommen, AktMonEin);
+
+            var PrevMonEin = from einnahmen in myHaushaltsbuch.einnahmen where einnahmen.Datum.Month == DateTime.Now.Month -1 select einnahmen;
+            UebersichtEinkommen("Einkommen vorherigen Monat", stckEinkommenPrev, PrevMonEin);
+            // Eintrag eintrag = new Eintrag(myHaushaltsbuch.AlleLaeden, myHaushaltsbuch.Kategorien);
+            eintrag = new Eintrag(myHaushaltsbuch);
+            tbiRechnung.Content = eintrag.NeuerRechnung(myHaushaltsbuch.familienmitglied);
+            tbiShop.Content = eintrag.NeuerLaden();
+            tbiProdgr.Content = eintrag.NeuerKategorie();
+            eintrag.Insert += Eintrag_Insert;
+            eintrag.InsertLaden += Eintrag_InsertLaden;
+            eintrag.InsertKategorie += Eintrag_InsertKategorie;
+
+            progressbar.Close();
+
+            //this_week.diagrammAnimiert();
+            
+        }
+
+        private void ThisWeek_Loaded(object sender, RoutedEventArgs e)
+        {
+            this_week.diagrammAnimiert();
+        }
+
+        private int Eintrag_InsertKategorie(MySqlCommand mysqlcommand)
+        {
+            int result = myHaushaltsbuch.Eintragen(mysqlcommand);
+            if (result > 0)
+            {
+                myHaushaltsbuch.Kategorien = myHaushaltsbuch.GetKategorien();
+                tbiRechnung.Content = eintrag.NeuerRechnung(myHaushaltsbuch.familienmitglied);
+            }
+            return result;
+        }
+
+        private int Eintrag_InsertLaden(MySqlCommand mysqlcommand)
+        {
+            int result = myHaushaltsbuch.Eintragen(mysqlcommand);
+            if (result > 0)
+            {
+                myHaushaltsbuch.AlleLaeden = myHaushaltsbuch.GetLaeden();
+                tbiRechnung.Content = eintrag.NeuerRechnung(myHaushaltsbuch.familienmitglied);
+            }
+            return result;
+        }
+
+        private int Eintrag_Insert(MySqlCommand mysqlcommand)
+        {
+            progressbar.ShowDialog();
+            int result = myHaushaltsbuch.Eintragen(mysqlcommand);
+            if (result > 0)
+            {
+                // TODO check refresh content,eventuell in function auslagern
+                tbiRechnung.Content = eintrag.NeuerRechnung(myHaushaltsbuch.familienmitglied);
+                this_week = new Anzeige(myHaushaltsbuch.GetRechnung_W());
+                last_week = new Anzeige(myHaushaltsbuch.GetRechnung_W(1));
+                double ein = (from pos in myHaushaltsbuch.einnahmen where pos.Datum.Month == DateTime.Now.Month select pos.Betrag).Sum();
+                this_month = new MonatsAnzeige(myHaushaltsbuch.GetRechnung_M(), ein);
+                ein = (from pos in myHaushaltsbuch.einnahmen where pos.Datum.Month == DateTime.Now.Month - 1 select pos.Betrag).Sum();
+                last_month = new MonatsAnzeige(myHaushaltsbuch.GetRechnung_M(1), ein);
+                thisWeek.Content = this_week.scrlAnzeige;
+                lastWeek.Content = last_week.scrlAnzeige;
+                thisMonth.Content = this_month.scrlAnzeige;
+                lastMonth.Content = last_month.scrlAnzeige;
+            }
+            progressbar.Close();
             return result;
         }
 
@@ -178,11 +232,44 @@ namespace Haushaltsbuch
             Tabelle.Children.Add(gesamtSumme);
             stckEinkommen.Children.Add(Tabelle);
         }
+        
+        private void Verbinden_Click(object sender, RoutedEventArgs e)
+        {
+            VerbindenFenster window = new VerbindenFenster();
+            window.Verbinden += Window_Verbinden;
+            window.ShowDialog();
+        }
+
+        private void Window_Verbinden(string connectstring)
+        {
+            string result = myHaushaltsbuch.Verbinden(connectstring);
+            MessageBox.Show(result);
+            if(result == "Verbunden") { RefreshContent(); }
+        }
+
+        private void RefreshContent()
+        {
+            myHaushaltsbuch.AlleLaeden = myHaushaltsbuch.GetLaeden();
+            myHaushaltsbuch.Kategorien = myHaushaltsbuch.GetKategorien();
+            myHaushaltsbuch.familienmitglied = myHaushaltsbuch.GetFamilie();
+            myHaushaltsbuch.einnahmen = myHaushaltsbuch.GetEinkommen();
+
+            this_week = new Anzeige(myHaushaltsbuch.GetRechnung_W());
+            last_week = new Anzeige(myHaushaltsbuch.GetRechnung_W(1));
+            double ein = (from pos in myHaushaltsbuch.einnahmen where pos.Datum.Month == DateTime.Now.Month select pos.Betrag).Sum();
+            this_month = new MonatsAnzeige(myHaushaltsbuch.GetRechnung_M(), ein);
+            ein = (from pos in myHaushaltsbuch.einnahmen where pos.Datum.Month == DateTime.Now.Month - 1 select pos.Betrag).Sum();
+            last_month = new MonatsAnzeige(myHaushaltsbuch.GetRechnung_M(1), ein);
+            thisWeek.Content = this_week.scrlAnzeige;
+            lastWeek.Content = last_week.scrlAnzeige;
+            thisMonth.Content = this_month.scrlAnzeige;
+            lastMonth.Content = last_month.scrlAnzeige;
+        }
 
         //private void uebersicht_SelectionChanged(object sender, SelectionChangedEventArgs e)
         //{
         //    // MessageBox.Show("TabItem gewwechselt zu " + uebersicht.SelectedIndex);
-            
+
         //    switch (((TabItem)(uebersicht.SelectedItem)).Name)
         //    {
         //        case "lastWeek": scrlbar.ScrollToTop(); last_week.diagrammAnimiert(); break;

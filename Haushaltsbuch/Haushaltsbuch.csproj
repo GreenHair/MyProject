@@ -71,6 +71,12 @@
       <DependentUpon>NumberInput.xaml</DependentUpon>
     </Compile>
     <Compile Include="Posten.cs" />
+    <Compile Include="VerbindenFenster.xaml.cs">
+      <DependentUpon>VerbindenFenster.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WarteBalken.xaml.cs">
+      <DependentUpon>WarteBalken.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Rechnung.cs" />
     <Compile Include="Shop.cs" />
     <Page Include="MainWindow.xaml">
@@ -88,6 +94,14 @@
     <Page Include="NumberInput.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VerbindenFenster.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WarteBalken.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

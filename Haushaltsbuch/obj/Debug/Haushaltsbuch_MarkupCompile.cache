@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\Auke Swen\documents\visual studio 2015\Projects\Haushaltsbuch\Haushaltsbuch\obj\Debug\
+D:\Users\vm\Source\Repos\MyProject\Haushaltsbuch\obj\Debug\
 Haushaltsbuch
 none
 false
 DEBUG;TRACE
-C:\Users\Auke Swen\documents\visual studio 2015\Projects\Haushaltsbuch\Haushaltsbuch\App.xaml
-2-1128820395
+D:\Users\vm\Source\Repos\MyProject\Haushaltsbuch\App.xaml
+41116767745
 
-16830155248
-14-432489723
-MainWindow.xaml;NumberInput.xaml;
+18-68333078
+14503607682
+MainWindow.xaml;NumberInput.xaml;VerbindenFenster.xaml;WarteBalken.xaml;
 
 False
 

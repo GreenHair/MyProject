@@ -15,6 +15,8 @@ namespace Haushaltsbuch
     class Eintrag
     {
         public event DelInsert Insert;
+        public event DelInsert InsertLaden;
+        public event DelInsert InsertKategorie;
         private StackPanel _zeileRechnung;
         private StackPanel _rechnungsPosten;
         public StackPanel stckRechnung { get; private set; }
@@ -153,6 +155,7 @@ namespace Haushaltsbuch
             stckZeileLaden.Children.Add(new CheckBox { Content = "Online",Width = 100 });
             Button btnLaden = new Button { Content = "OK", Width = 100 };
             btnLaden.Click += BtnLaden_Click;
+            btnLaden.IsEnabled = Laeden.Count > 0;
             stckZeileLaden.Children.Add(btnLaden);
             stckLaden.Children.Add(stckZeileLaden);
             return stckLaden;
@@ -162,13 +165,17 @@ namespace Haushaltsbuch
         {
             TextBox laden = stckZeileLaden.Children[0] as TextBox;
             CheckBox online = stckZeileLaden.Children[1] as CheckBox;
-            MySqlCommand comm = new MySqlCommand("insert into laden(name,online) values (@name," + Convert.ToInt32(online) + ")");
-            MySqlParameter param = new MySqlParameter("@name", MySqlDbType.VarChar,20);
-            param.Value = laden.Text;
-            comm.Parameters.Add(param);
-
-            MessageBox.Show(Laeden.Count.ToString() + "," + laden.Text + "," + Convert.ToInt32(online));
-            Clear(laden);
+            if (laden.Text.Length > 0)
+            {
+                MySqlCommand comm = new MySqlCommand("insert into laden(name,online) values (@name," + Convert.ToInt32(online.IsChecked) + ")");
+                MySqlParameter param = new MySqlParameter("@name", MySqlDbType.VarChar);
+                param.Value = laden.Text;
+                comm.Parameters.Add(param);
+                int? result = InsertLaden?.Invoke(comm);
+                //MessageBox.Show(Laeden.Count.ToString() + "," + laden.Text + "," + Convert.ToInt32(online.IsChecked));
+                if (result > 0) { Clear(laden); }
+            }
+            else { MessageBox.Show("Bitte geben Sie einen Namen an"); }
         }
 
         public StackPanel NeuerKategorie()
@@ -176,7 +183,7 @@ namespace Haushaltsbuch
             StackPanel stckKategorie = new StackPanel { HorizontalAlignment = HorizontalAlignment.Center };
             stckKategorie.Children.Add(new Label
             {
-                Content = "Neuer Kategorie",
+                Content = "Neuer Laden",
                 FontSize = 18,
                 FontWeight = FontWeights.DemiBold
             });
@@ -185,6 +192,7 @@ namespace Haushaltsbuch
             stckZeileKategorie.Children.Add(new CheckBox { Content = "Lebensmittel", Width = 100 });
             Button btnKategorie = new Button { Content = "OK", Width = 100 };
             btnKategorie.Click += BtnKategorie_Click;
+            btnKategorie.IsEnabled = Prodgr.Count > 0;
             stckZeileKategorie.Children.Add(btnKategorie);
             stckKategorie.Children.Add(stckZeileKategorie);
             return stckKategorie;
@@ -194,9 +202,17 @@ namespace Haushaltsbuch
         {
             TextBox kategorie = stckZeileLaden.Children[0] as TextBox;
             CheckBox essen = stckZeileLaden.Children[1] as CheckBox;
-            // bezeichnung varchar 20
-            MessageBox.Show(Prodgr.Count.ToString() + "," + kategorie.Text + "," + Convert.ToInt32(essen));
-            Clear(kategorie);
+            if (kategorie.Text.Length > 0)
+            {
+                MySqlCommand comm = new MySqlCommand("insert into laden(name,online) values (@name," + Convert.ToInt32(essen.IsChecked) + ")");
+                MySqlParameter param = new MySqlParameter("@name", MySqlDbType.VarChar);
+                param.Value = kategorie.Text;
+                comm.Parameters.Add(param);
+                int? result = InsertKategorie?.Invoke(comm);
+                //MessageBox.Show(Prodgr.Count.ToString() + "," + kategorie.Text + "," + Convert.ToInt32(essen));
+                if (result > 0) { Clear(kategorie); }
+            }
+            else { MessageBox.Show("Bitte geben Sie einen Namen an"); }
         }
 
         private void Clear(params TextBox[] text)

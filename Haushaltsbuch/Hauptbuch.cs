@@ -15,8 +15,8 @@ namespace Haushaltsbuch
                               "DATABASE=haushaltsbuch;" +
                               "UID=auke;" +
                               "PASSWORD=ich;";
-        static MySqlConnection connection = new MySqlConnection(dbconnectstring);
-        MySqlCommand command = connection.CreateCommand();
+        MySqlConnection connection = new MySqlConnection(dbconnectstring);
+        MySqlCommand command;// = connection.CreateCommand();
         MySqlDataReader Reader;
 
         List<Rechnung> _ausgaben = new List<Rechnung>();
@@ -32,6 +32,8 @@ namespace Haushaltsbuch
         {
             try
             {
+                connection = new MySqlConnection(dbconnectstring);
+                command = connection.CreateCommand();
                 connection.Open();
 
                 command.CommandText = "SELECT * FROM familienmitglied";
@@ -173,6 +175,10 @@ namespace Haushaltsbuch
             {
                 return alleLaeden;
             }
+            set
+            {
+                alleLaeden = value;
+            }
         }
 
         public List<Produktgruppe> Kategorien
@@ -180,6 +186,10 @@ namespace Haushaltsbuch
             get
             {
                 return kategorien;
+            }
+            set
+            {
+                kategorien = value;
             }
         }
 
@@ -303,7 +313,7 @@ namespace Haushaltsbuch
             while (Reader.Read())
             {
                 Produktgruppe p = new Produktgruppe(Reader[0], Reader[1], Reader[2]);
-                kategorien.Add(p);
+                temp.Add(p);
             }
             Reader.Close();
             return temp;
@@ -317,7 +327,7 @@ namespace Haushaltsbuch
             while (Reader.Read())
             {
                 Einkommen e = new Einkommen(Reader[0], Reader[1], Reader[2], _familienmitglied[Convert.ToInt32(Reader[3]) - 1], Reader[4]);
-                _einnahmen.Add(e);
+                temp.Add(e);
             }
             Reader.Close();
             return temp;
@@ -333,9 +343,26 @@ namespace Haushaltsbuch
             return result;
         }
 
+        internal string Verbinden(string connectstring)
+        {
+            try
+            {
+                connection = new MySqlConnection(connectstring);
+                command = connection.CreateCommand();
+                connection.Open();
+                connection.ChangeDatabase("haushaltsbuch");
+                return "Verbunden";
+            }
+            catch(MySqlException error)
+            {
+                return error.Message;
+            }
+        }
+
         ~Hauptbuch()
         {
             connection.Close();
         }
+
     }
 }
