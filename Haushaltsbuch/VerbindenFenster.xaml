@@ -13,7 +13,7 @@
             <Label Content="User"/>
             <TextBox Name="txtUser"/>
             <Label Content="Password"/>
-            <TextBox Name="txtPassword" Text=""/>
+            <PasswordBox Name="txtPassword" Password=""/>
             <Button Name="connect" Width="100" Margin="10" Click="connect_Click">Verbinden</Button>
         </StackPanel>
     </Grid>

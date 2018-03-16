@@ -29,7 +29,7 @@ namespace Haushaltsbuch
 
         private void connect_Click(object sender, RoutedEventArgs e)
         {
-            string conn_string = "server=" + txtServer.Text + ";uid=" + txtUser.Text + ";password=" + txtPassword.Text + ";";
+            string conn_string = "server=" + txtServer.Text + ";uid=" + txtUser.Text + ";password=" + txtPassword.Password + ";";
             Verbinden?.Invoke(conn_string);
             Close();
         }
