@@ -351,6 +351,12 @@ namespace Haushaltsbuch
                 command = connection.CreateCommand();
                 connection.Open();
                 connection.ChangeDatabase("haushaltsbuch");
+
+                _familienmitglied = GetFamilie();
+                alleLaeden = GetLaeden();
+                kategorien = GetKategorien();
+                _einnahmen = GetEinkommen();
+
                 return "Verbunden";
             }
             catch(MySqlException error)

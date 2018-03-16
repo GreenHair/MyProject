@@ -249,10 +249,10 @@ namespace Haushaltsbuch
 
         private void RefreshContent()
         {
-            myHaushaltsbuch.AlleLaeden = myHaushaltsbuch.GetLaeden();
-            myHaushaltsbuch.Kategorien = myHaushaltsbuch.GetKategorien();
-            myHaushaltsbuch.familienmitglied = myHaushaltsbuch.GetFamilie();
-            myHaushaltsbuch.einnahmen = myHaushaltsbuch.GetEinkommen();
+            //myHaushaltsbuch.AlleLaeden = myHaushaltsbuch.GetLaeden();
+            //myHaushaltsbuch.Kategorien = myHaushaltsbuch.GetKategorien();
+            //myHaushaltsbuch.familienmitglied = myHaushaltsbuch.GetFamilie();
+            //myHaushaltsbuch.einnahmen = myHaushaltsbuch.GetEinkommen();
 
             this_week = new Anzeige(myHaushaltsbuch.GetRechnung_W());
             last_week = new Anzeige(myHaushaltsbuch.GetRechnung_W(1));
