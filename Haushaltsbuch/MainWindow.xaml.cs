@@ -33,7 +33,7 @@ namespace Haushaltsbuch
         {
             InitializeComponent();
             progressbar = new WarteBalken();
-            progressbar.Show();
+            
 
             //myHaushaltsbuch = new Hauptbuch();
             //this_week = new Anzeige(myHaushaltsbuch.GetRechnung_W());
@@ -66,6 +66,7 @@ namespace Haushaltsbuch
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            progressbar.Show();
             myHaushaltsbuch = new Hauptbuch();
             this_week = new Anzeige(myHaushaltsbuch.GetRechnung_W());
             last_week = new Anzeige(myHaushaltsbuch.GetRechnung_W(1));
@@ -129,7 +130,8 @@ namespace Haushaltsbuch
 
         private int Eintrag_Insert(MySqlCommand mysqlcommand)
         {
-            progressbar.ShowDialog();
+            progressbar = new WarteBalken();
+            progressbar.Show();
             int result = myHaushaltsbuch.Eintragen(mysqlcommand);
             if (result > 0)
             {
