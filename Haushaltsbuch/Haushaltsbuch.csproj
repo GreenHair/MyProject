@@ -71,6 +71,7 @@
       <DependentUpon>NumberInput.xaml</DependentUpon>
     </Compile>
     <Compile Include="Posten.cs" />
+    <Compile Include="Suchergebnis.cs" />
     <Compile Include="VerbindenFenster.xaml.cs">
       <DependentUpon>VerbindenFenster.xaml</DependentUpon>
     </Compile>

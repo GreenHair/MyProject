@@ -13,6 +13,8 @@ namespace Haushaltsbuch
         double _betrag;
         Produktgruppe _kategorie;
 
+        public Posten() { }
+
         public Posten(object nr, object str, object amount, Produktgruppe pr)
         {
             _id = Convert.ToInt32(nr);

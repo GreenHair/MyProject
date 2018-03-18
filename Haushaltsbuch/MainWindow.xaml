@@ -19,15 +19,15 @@
             <MenuItem Header="Verbinden" Click="Verbinden_Click"/>
         </Menu>
         <!--<ScrollViewer VerticalScrollBarVisibility="Visible" Name="scrlbar" DockPanel.Dock="Top" Visibility="Visible">-->
-            <TabControl Name="uebersicht" DockPanel.Dock="Top" Visibility="Visible">
-                <TabItem Header="This Week" Name="thisWeek" GotFocus="tabItem_GotFocus">
-                    <!--<TextBox Name="textBox" Width="450" Height="300" VerticalScrollBarVisibility="Auto"/>-->
-                    <!--<ScrollViewer Name="scrlbar" VerticalScrollBarVisibility="Auto"></ScrollViewer>-->
-                </TabItem>
-                <TabItem Header="last Week" Name="lastWeek" GotFocus="tabItem_GotFocus"></TabItem>
-                <TabItem Header="This Month" Name="thisMonth" GotFocus="tabItem_GotFocus"></TabItem>
-                <TabItem Header="Last Month" Name="lastMonth" GotFocus="tabItem_GotFocus"></TabItem>
-            </TabControl>
+        <TabControl Name="uebersicht" DockPanel.Dock="Top" Visibility="Visible">
+            <TabItem Header="This Week" Name="thisWeek" GotFocus="tabItem_GotFocus">
+                <!--<TextBox Name="textBox" Width="450" Height="300" VerticalScrollBarVisibility="Auto"/>-->
+                <!--<ScrollViewer Name="scrlbar" VerticalScrollBarVisibility="Auto"></ScrollViewer>-->
+            </TabItem>
+            <TabItem Header="last Week" Name="lastWeek" GotFocus="tabItem_GotFocus"></TabItem>
+            <TabItem Header="This Month" Name="thisMonth" GotFocus="tabItem_GotFocus"></TabItem>
+            <TabItem Header="Last Month" Name="lastMonth" GotFocus="tabItem_GotFocus"></TabItem>
+        </TabControl>
         <!--</ScrollViewer>-->
         <Grid Name="grdEinkommen" Visibility="Collapsed" DockPanel.Dock="Top">
             <Grid.RowDefinitions>
@@ -45,5 +45,50 @@
             <TabItem Header="Laden" Name="tbiShop"></TabItem>
             <TabItem Header="Produktgruppe" Name="tbiProdgr"></TabItem>
         </TabControl>
+        <Grid Name="grdSuchen" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="4*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Content="Suchen" Grid.Column="1" Grid.ColumnSpan="3" HorizontalContentAlignment="Center" FontSize="20" FontWeight="Bold"/>
+            <Label Content="Bezeichnung" Grid.Row="1" Margin="10"/>
+            <TextBox Name="txtBezeichnung" Grid.Row="1" Margin="10,40,10,63"/>
+            <StackPanel Grid.Row="1" Grid.Column="1">
+                <Label Content="Laden"  Margin="10"/>
+                <ComboBox Name="cmbLaden"/>
+                <Label Content="Kategorie"/>
+                <ComboBox Name="cmbKategorie"/>
+            </StackPanel>
+            <StackPanel Grid.Column="2" Grid.Row="1" Name="stckPreisSuchen">
+                <Label Content="Preis" Margin="10"/>
+                <RadioButton Name="rHigher" Content="Höher als" Margin="10,0,0,0"/>
+                <RadioButton Name="rLower" Content="Niedriger als" Margin="10,0,0,0"/>
+                <RadioButton Name="rEquals" Content="Gleich" Margin="10,0,0,0"/>
+                <TextBox Name="txtPreis"/>
+            </StackPanel>
+            <StackPanel Grid.Column="3" Grid.Row="1">
+                <DatePicker Name="dpDatum" Margin="10"/>
+            </StackPanel>
+            <Button Name="btnSuchenStarten" Grid.Column="4" Grid.Row="1" VerticalAlignment="Bottom" Margin="10" Click="btnSuchenStarten_Click">suchen</Button>
+            <ListView Name="lstSuchResultat" ItemsSource="{Binding}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Datum" DisplayMemberBinding="{Binding Path=Kassenzettel.datum}" Width="100"/>
+                        <GridViewColumn Header="Bezeichnung" DisplayMemberBinding="{Binding Path=Artikel.bezeichnung}" Width="100"/>
+                        <GridViewColumn Header="Preis" DisplayMemberBinding="{Binding Path=Artikel.betrag}" Width="100"/>
+                        <GridViewColumn Header="Laden" DisplayMemberBinding="{Binding Path=Kassenzettel.laden}" Width="100"/>
+                        <GridViewColumn Header="Kategorie" DisplayMemberBinding="{Binding Path=Artikel.kategorie}" Width="100"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
     </DockPanel>
 </Window>

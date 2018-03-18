@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using System.Windows;
+using System.Collections;
 
 namespace Haushaltsbuch
 {
@@ -365,10 +366,39 @@ namespace Haushaltsbuch
             }
         }
 
+        internal List<Suchergebnis> Suchen(MySqlCommand command)
+        {
+            List<Suchergebnis> liste = new List<Suchergebnis>();
+            command.Connection = connection;
+            command.Prepare();
+            Reader = command.ExecuteReader();
+            while (Reader.Read())
+            {
+                Suchergebnis s = new Suchergebnis();
+                Rechnung r = new Rechnung();
+                Posten p = new Posten();
+
+                r.id = (int)Reader["r_id"];
+                r.laden = alleLaeden[(int)Reader["laden"]-1];
+                r.datum = Convert.ToDateTime(Reader["datum"]);
+                r.einmalig = Convert.ToBoolean(Reader["einmalig"]);
+                r.person = _familienmitglied[(int)Reader["person"]-1];
+                s.Kassenzettel = r;
+                p.id = (int)Reader["a_id"];
+                p.bezeichnung = Reader["bezeichnung"].ToString();
+                p.betrag = Convert.ToDouble(Reader["betrag"]);
+                p.kategorie = kategorien[(int)Reader["prod_gr"]-1];
+                s.Artikel = p;
+
+                liste.Add(s);
+            }
+            Reader.Close();
+            return liste;
+        }
+
         ~Hauptbuch()
         {
             connection.Close();
         }
-
     }
 }

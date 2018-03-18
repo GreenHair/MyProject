@@ -16,6 +16,8 @@ namespace Haushaltsbuch
         List<Posten> _items = new List<Posten>();
         Shop _laden;
 
+        public Rechnung() { }
+
         public Rechnung(object nr,Shop l, object day, object ein, Person p)
         {
             _id = Convert.ToInt32(nr);

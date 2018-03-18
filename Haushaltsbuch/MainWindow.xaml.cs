@@ -55,6 +55,7 @@ namespace Haushaltsbuch
             uebersicht.Visibility = Visibility.Visible;//scrbar
             grdEinkommen.Visibility = Visibility.Collapsed;
             tbcEintrag.Visibility = Visibility.Collapsed;
+            grdSuchen.Visibility = Visibility.Collapsed;
             tabItem_GotFocus(uebersicht.SelectedItem, e);
         }
 
@@ -62,7 +63,8 @@ namespace Haushaltsbuch
         {
             tbcEintrag.Visibility = Visibility.Visible;
             uebersicht.Visibility = Visibility.Collapsed;//scrbar
-            grdEinkommen.Visibility = Visibility.Collapsed;            
+            grdEinkommen.Visibility = Visibility.Collapsed;
+            grdSuchen.Visibility = Visibility.Collapsed;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -93,6 +95,10 @@ namespace Haushaltsbuch
             eintrag.Insert += Eintrag_Insert;
             eintrag.InsertLaden += Eintrag_InsertLaden;
             eintrag.InsertKategorie += Eintrag_InsertKategorie;
+
+            cmbKategorie.ItemsSource = myHaushaltsbuch.Kategorien;
+            cmbLaden.ItemsSource = myHaushaltsbuch.AlleLaeden;
+            //stckPreisSuchen.Children.Add(new NummerfeldTest.NumberInput());
 
             progressbar.Close();
 
@@ -163,11 +169,15 @@ namespace Haushaltsbuch
             grdEinkommen.Visibility = Visibility.Visible;
             uebersicht.Visibility = Visibility.Collapsed; //scrbar
             tbcEintrag.Visibility = Visibility.Collapsed;
+            grdSuchen.Visibility = Visibility.Collapsed;
         }
 
         private void Suchen_CLick(object sender, RoutedEventArgs e)
         {
-
+            grdSuchen.Visibility = Visibility.Visible;
+            tbcEintrag.Visibility = Visibility.Collapsed;
+            uebersicht.Visibility = Visibility.Collapsed;//scrbar
+            grdEinkommen.Visibility = Visibility.Collapsed;
         }
 
         private static void UebersichtEinkommen(string wann, StackPanel stckEinkommen, IEnumerable<Einkommen> einkommen)
@@ -240,6 +250,68 @@ namespace Haushaltsbuch
         {
             string result = myHaushaltsbuch.Verbinden(connectstring);
             if(result == "Verbunden") { Window_Loaded(new object(),new RoutedEventArgs()); }
+        }
+
+        private void btnSuchenStarten_Click(object sender, RoutedEventArgs e)
+        {
+            string search = " select rechnung.id as r_id, laden,datum,einmalig,person,ausgaben.ID as a_id,bezeichnung,betrag,prod_gr from ausgaben join rechnung on rechnung.id = ausgaben.rechnungsnr";
+            MySqlCommand command = new MySqlCommand();
+
+            if (txtBezeichnung.Text.Length != 0 || txtPreis.Text.Length != 0 || cmbKategorie.SelectedItem != null || cmbLaden.SelectedItem != null || dpDatum.SelectedDate != null)
+            {
+                search += " where ";
+                if(txtBezeichnung.Text.Length != 0)
+                {
+                    search += "bezeichnung = @bez";
+                    MySqlParameter bez_par = new MySqlParameter("@bez", MySqlDbType.VarChar);
+                    bez_par.Value = txtBezeichnung.Text;
+                    command.Parameters.Add(bez_par);
+                }
+                if(txtPreis.Text.Length != 0)
+                {
+                    if(txtBezeichnung.Text.Length != 0)
+                    {
+                        search += " and ";
+                    }
+                    search += "betrag ";
+                    if (rHigher.IsChecked == true) search += ">= ";
+                    if (rLower.IsChecked == true) search += "<= ";
+                    if (rEquals.IsChecked == true) search += "= ";
+                    search += "@betr";
+                    MySqlParameter par_betr = new MySqlParameter("@betr", MySqlDbType.Double);
+                    par_betr.Value = Convert.ToDouble(txtPreis.Text);
+                    command.Parameters.Add(par_betr);
+                }
+                if(cmbKategorie.SelectedItem != null)
+                {
+                    if(txtBezeichnung.Text.Length != 0 || txtPreis.Text.Length != 0)
+                    {
+                        search += " and ";
+                    }
+                    search += "prod_gr = " + ((Produktgruppe)cmbKategorie.SelectedItem).id;
+                }
+                if (cmbLaden.SelectedItem != null)
+                {
+                    if (txtBezeichnung.Text.Length != 0 || txtPreis.Text.Length != 0 || cmbKategorie.SelectedItem != null)
+                    {
+                        search += " and ";
+                    }
+                    search += "laden = " + ((Shop)cmbLaden.SelectedItem).id;
+                }
+                if(dpDatum.SelectedDate != null)
+                {
+                    if (txtBezeichnung.Text.Length != 0 || txtPreis.Text.Length != 0 || cmbKategorie.SelectedItem != null || cmbLaden.SelectedItem != null)
+                    {
+                        search += " and ";
+                    }
+                    search += "datum = " + string.Format("yyyy-MM-dd", dpDatum.SelectedDate);
+                }
+
+            }
+            //MessageBox.Show(search);
+            command.CommandText = search;
+            lstSuchResultat.ItemsSource = myHaushaltsbuch.Suchen(command);
+            
         }
 
         //private void RefreshContent()
