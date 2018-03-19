@@ -17,11 +17,13 @@ namespace Haushaltsbuch
         public event DelInsert Insert;
         public event DelInsert InsertLaden;
         public event DelInsert InsertKategorie;
+        public event DelInsert InsertEinkommen;
         private StackPanel _zeileRechnung;
         private StackPanel _rechnungsPosten;
         public StackPanel stckRechnung { get; private set; }
         private StackPanel stckZeileLaden;
         private StackPanel stckZeileKategorie;
+        private StackPanel stckZeileEinkommen;
         private List<Shop> Laeden;
         private List<Produktgruppe> Prodgr;
         private Hauptbuch _haushaltsbuch;
@@ -214,6 +216,56 @@ namespace Haushaltsbuch
             }
             else { MessageBox.Show("Bitte geben Sie einen Namen an"); }
         }
+
+        public StackPanel NeuesEinkommen()
+        {
+            StackPanel stckEinkommen = new StackPanel { HorizontalAlignment = HorizontalAlignment.Center };
+            stckEinkommen.Children.Add(new Label
+            {
+                Content = "Neues Einkommen",
+                FontSize = 18,
+                FontWeight = FontWeights.DemiBold
+            });
+            stckZeileEinkommen = new StackPanel { Orientation = Orientation.Horizontal };
+            stckZeileEinkommen.Children.Add(new DatePicker { SelectedDate = DateTime.Now.Date });
+            stckZeileEinkommen.Children.Add(new TextBox { Width = 200 });
+            stckZeileEinkommen.Children.Add(new Nummernfeld());
+            stckZeileEinkommen.Children.Add(new ComboBox { ItemsSource = _haushaltsbuch.familienmitglied });
+            Button btnEinkommen = new Button { Content = "OK", Width = 100 };
+            btnEinkommen.Click += BtnEinkommen_Click;
+            btnEinkommen.IsEnabled = Prodgr.Count > 0;
+            stckZeileEinkommen.Children.Add(btnEinkommen);
+            stckEinkommen.Children.Add(stckZeileEinkommen);
+            return stckEinkommen;
+        }
+
+        private void BtnEinkommen_Click(object sender, RoutedEventArgs e)
+        {
+            DatePicker dp = stckZeileEinkommen.Children[0] as DatePicker;
+            TextBox tb = stckZeileEinkommen.Children[1] as TextBox;
+            Nummernfeld num = stckZeileEinkommen.Children[2] as Nummernfeld;
+            ComboBox cmb = stckZeileEinkommen.Children[3] as ComboBox;
+            if (tb.Text.Length > 0 && num.Text.Length > 0)
+            {
+                string sql = "insert into einkommen (datum,bezeichnung,betrag,person) values('" + string.Format("yyyy-MM-dd", dp.SelectedDate) + "',@bez,@betr," + ((Person)cmb.SelectedItem).id + ")";
+                MySqlParameter par_bez = new MySqlParameter("@bez", MySqlDbType.VarChar);
+                MySqlCommand command = new MySqlCommand(sql);
+                command.Parameters.Add(par_bez);
+                MySqlParameter par_betr = new MySqlParameter("@betr", MySqlDbType.Double);
+                command.Parameters.Add(par_betr);
+
+                int? result = InsertEinkommen?.Invoke(command);
+                if(result > 0)
+                {
+                    TextBox[] t = { tb, num.txtBox };
+                    Clear(t);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Bitte alle Felder ausfüllen");
+            }
+        } 
 
         private void Clear(params TextBox[] text)
         {

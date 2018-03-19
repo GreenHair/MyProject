@@ -92,9 +92,11 @@ namespace Haushaltsbuch
             tbiRechnung.Content = eintrag.NeuerRechnung(myHaushaltsbuch.familienmitglied);
             tbiShop.Content = eintrag.NeuerLaden();
             tbiProdgr.Content = eintrag.NeuerKategorie();
+            tbiEinkommen.Content = eintrag.NeuesEinkommen();
             eintrag.Insert += Eintrag_Insert;
             eintrag.InsertLaden += Eintrag_InsertLaden;
             eintrag.InsertKategorie += Eintrag_InsertKategorie;
+            eintrag.InsertEinkommen += Eintrag_InsertEinkommen;
 
             cmbKategorie.ItemsSource = myHaushaltsbuch.Kategorien;
             cmbLaden.ItemsSource = myHaushaltsbuch.AlleLaeden;
@@ -105,7 +107,17 @@ namespace Haushaltsbuch
             this_week.diagrammAnimiert();
             
         }
-        
+
+        private int Eintrag_InsertEinkommen(MySqlCommand mysqlcommand)
+        {
+            int result = myHaushaltsbuch.Eintragen(mysqlcommand);
+            if(result > 0)
+            {
+
+            }
+            return result;
+        }
+
         private int Eintrag_InsertKategorie(MySqlCommand mysqlcommand)
         {
             int result = myHaushaltsbuch.Eintragen(mysqlcommand);
@@ -257,7 +269,7 @@ namespace Haushaltsbuch
             string search = " select rechnung.id as r_id, laden,datum,einmalig,person,ausgaben.ID as a_id,bezeichnung,betrag,prod_gr from ausgaben join rechnung on rechnung.id = ausgaben.rechnungsnr";
             MySqlCommand command = new MySqlCommand();
 
-            if (txtBezeichnung.Text.Length != 0 || txtPreis.Text.Length != 0 || cmbKategorie.SelectedItem != null || cmbLaden.SelectedItem != null || dpDatum.SelectedDate != null)
+            if (txtBezeichnung.Text.Length != 0 || numPreis.Text.Length != 0 || cmbKategorie.SelectedItem != null || cmbLaden.SelectedItem != null || dpDatum.SelectedDate != null)
             {
                 search += " where ";
                 if(txtBezeichnung.Text.Length != 0)
@@ -267,7 +279,7 @@ namespace Haushaltsbuch
                     bez_par.Value = txtBezeichnung.Text;
                     command.Parameters.Add(bez_par);
                 }
-                if(txtPreis.Text.Length != 0)
+                if(numPreis.Text.Length != 0)
                 {
                     if(txtBezeichnung.Text.Length != 0)
                     {
@@ -279,20 +291,20 @@ namespace Haushaltsbuch
                     if (rEquals.IsChecked == true) search += "= ";
                     search += "@betr";
                     MySqlParameter par_betr = new MySqlParameter("@betr", MySqlDbType.Double);
-                    par_betr.Value = Convert.ToDouble(txtPreis.Text);
+                    par_betr.Value = Convert.ToDouble(numPreis.Text);
                     command.Parameters.Add(par_betr);
                 }
                 if(cmbKategorie.SelectedItem != null)
                 {
-                    if(txtBezeichnung.Text.Length != 0 || txtPreis.Text.Length != 0)
-                    {
+                    if(txtBezeichnung.Text.Length != 0 || numPreis.Text.Length != 0)
+                    { 
                         search += " and ";
                     }
                     search += "prod_gr = " + ((Produktgruppe)cmbKategorie.SelectedItem).id;
                 }
                 if (cmbLaden.SelectedItem != null)
                 {
-                    if (txtBezeichnung.Text.Length != 0 || txtPreis.Text.Length != 0 || cmbKategorie.SelectedItem != null)
+                    if (txtBezeichnung.Text.Length != 0 || numPreis.Text.Length != 0 || cmbKategorie.SelectedItem != null)
                     {
                         search += " and ";
                     }
@@ -300,7 +312,7 @@ namespace Haushaltsbuch
                 }
                 if(dpDatum.SelectedDate != null)
                 {
-                    if (txtBezeichnung.Text.Length != 0 || txtPreis.Text.Length != 0 || cmbKategorie.SelectedItem != null || cmbLaden.SelectedItem != null)
+                    if (txtBezeichnung.Text.Length != 0 || numPreis.Text.Length != 0 || cmbKategorie.SelectedItem != null || cmbLaden.SelectedItem != null)
                     {
                         search += " and ";
                     }
