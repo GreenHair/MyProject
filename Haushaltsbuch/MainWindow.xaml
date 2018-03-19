@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Haushaltsbuch"
+        xmlns:num="clr-namespace:NummerfeldTest"
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="800" Loaded="Window_Loaded">
     <DockPanel Name="Fenster">
@@ -19,7 +20,7 @@
             <MenuItem Header="Verbinden" Click="Verbinden_Click"/>
         </Menu>
         <!--<ScrollViewer VerticalScrollBarVisibility="Visible" Name="scrlbar" DockPanel.Dock="Top" Visibility="Visible">-->
-        <TabControl Name="uebersicht" DockPanel.Dock="Top" Visibility="Visible">
+        <TabControl Name="uebersicht" DockPanel.Dock="Top" Visibility="Collapsed">
             <TabItem Header="This Week" Name="thisWeek" GotFocus="tabItem_GotFocus">
                 <!--<TextBox Name="textBox" Width="450" Height="300" VerticalScrollBarVisibility="Auto"/>-->
                 <!--<ScrollViewer Name="scrlbar" VerticalScrollBarVisibility="Auto"></ScrollViewer>-->
@@ -45,7 +46,7 @@
             <TabItem Header="Laden" Name="tbiShop"></TabItem>
             <TabItem Header="Produktgruppe" Name="tbiProdgr"></TabItem>
         </TabControl>
-        <Grid Name="grdSuchen" Visibility="Collapsed">
+        <Grid Name="grdSuchen" Visibility="Visible">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition Height="2*"/>
@@ -72,7 +73,8 @@
                 <RadioButton Name="rHigher" Content="Höher als" Margin="10,0,0,0"/>
                 <RadioButton Name="rLower" Content="Niedriger als" Margin="10,0,0,0"/>
                 <RadioButton Name="rEquals" Content="Gleich" Margin="10,0,0,0"/>
-                <TextBox Name="txtPreis"/>
+                <local:Nummernfeld x:Name="txtPreis"/>
+                <!--<TextBox Name="txtPreis"/>-->
             </StackPanel>
             <StackPanel Grid.Column="3" Grid.Row="1">
                 <DatePicker Name="dpDatum" Margin="10"/>

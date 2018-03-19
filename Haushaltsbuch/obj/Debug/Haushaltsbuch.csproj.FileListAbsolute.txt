@@ -40,3 +40,6 @@ C:\Users\Auke Swen\documents\visual studio 2015\Projects\Haushaltsbuch\Haushalts
 C:\Users\Auke Swen\documents\visual studio 2015\Projects\Haushaltsbuch\Haushaltsbuch\obj\Debug\WarteBalken.g.cs
 C:\Users\Auke Swen\documents\visual studio 2015\Projects\Haushaltsbuch\Haushaltsbuch\obj\Debug\VerbindenFenster.baml
 C:\Users\Auke Swen\documents\visual studio 2015\Projects\Haushaltsbuch\Haushaltsbuch\obj\Debug\WarteBalken.baml
+D:\Users\vm\Source\Repos\MyProject\Haushaltsbuch\obj\Debug\Nummernfeld.g.cs
+D:\Users\vm\Source\Repos\MyProject\Haushaltsbuch\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\Users\vm\Source\Repos\MyProject\Haushaltsbuch\obj\Debug\Nummernfeld.baml
