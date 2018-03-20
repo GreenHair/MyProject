@@ -17,7 +17,7 @@
             </MenuItem>
             <MenuItem Header="Einkommen" Click="Einkommen_Click"/>
             <MenuItem Header="Suchen" Click="Suchen_CLick"/>
-            <MenuItem Header="Verbinden" Click="Verbinden_Click"/>
+            <MenuItem Header="Verbinden" Click="Verbinden_Click" IsEnabled="True" Name="miVerbinden"/>
         </Menu>
         <!--<ScrollViewer VerticalScrollBarVisibility="Visible" Name="scrlbar" DockPanel.Dock="Top" Visibility="Visible">-->
         <TabControl Name="uebersicht" DockPanel.Dock="Top" Visibility="Visible">
@@ -77,15 +77,20 @@
                 <local:Nummernfeld x:Name="numPreis"/>
             </StackPanel>
             <StackPanel Grid.Column="3" Grid.Row="1">
-                <DatePicker Name="dpDatum" Margin="10"/>
+                <DatePicker Name="dpDatum" Margin="10,0"/>
+                <RadioButton Name="rVor" Content="Vor" Margin="10,10,0,0"/>
+                <RadioButton Name="rAm" Content="Am" Margin="10,0,0,0" IsChecked="True"/>
+                <RadioButton Name="rNach" Content="Nach" Margin="10,0,0,0"/>                
+                <RadioButton Name="rZwischen" Content="Zwischen" Margin="10,0,0,10"/>
+                <DatePicker Name="dpDatum2" SelectedDate="{Binding ElementName=dpDatum, Path=SelectedDate, Mode=OneWay}" Margin="10,0"/>
             </StackPanel>
             <Button Name="btnSuchenStarten" Grid.Column="4" Grid.Row="1" VerticalAlignment="Bottom" Margin="10" Click="btnSuchenStarten_Click">suchen</Button>
             <ListView Name="lstSuchResultat" ItemsSource="{Binding}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Datum" DisplayMemberBinding="{Binding Path=Kassenzettel.datum}" Width="100"/>
+                        <GridViewColumn Header="Datum" DisplayMemberBinding="{Binding Path=Kassenzettel.datum , StringFormat={}{0:dd.MM.yy}}" Width="100"/>
                         <GridViewColumn Header="Bezeichnung" DisplayMemberBinding="{Binding Path=Artikel.bezeichnung}" Width="100"/>
-                        <GridViewColumn Header="Preis" DisplayMemberBinding="{Binding Path=Artikel.betrag}" Width="100"/>
+                        <GridViewColumn Header="Preis" DisplayMemberBinding="{Binding Path=Artikel.betrag, ConverterCulture='de-DE', StringFormat={}{0:C}}" Width="100"/>
                         <GridViewColumn Header="Laden" DisplayMemberBinding="{Binding Path=Kassenzettel.laden}" Width="100"/>
                         <GridViewColumn Header="Kategorie" DisplayMemberBinding="{Binding Path=Artikel.kategorie}" Width="100"/>
                     </GridView>

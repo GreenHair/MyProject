@@ -35,7 +35,7 @@ namespace Haushaltsbuch
             progressbar = new WarteBalken();
             progressbar.Show();
             myHaushaltsbuch = new Hauptbuch();
-
+            
             //myHaushaltsbuch = new Hauptbuch();
             //this_week = new Anzeige(myHaushaltsbuch.GetRechnung_W());
             //last_week = new Anzeige(myHaushaltsbuch.GetRechnung_W(1));
@@ -316,11 +316,14 @@ namespace Haushaltsbuch
                     {
                         search += " and ";
                     }
-                    search += "datum = " + string.Format("yyyy-MM-dd", dpDatum.SelectedDate);
+                    if(rVor.IsChecked == true) search += "datum < '" + string.Format("{0:yyyy-MM-dd}", dpDatum.SelectedDate) + "'";
+                    if(rAm.IsChecked == true)  search += "datum = '" + string.Format("{0:yyyy-MM-dd}", dpDatum.SelectedDate) + "'";
+                    if(rNach.IsChecked == true) search += "datum > '" + string.Format("{0:yyyy-MM-dd}", dpDatum.SelectedDate) + "'";
+                    if(rZwischen.IsChecked == true) search += "datum between '" + string.Format("{0:yyyy-MM-dd}", dpDatum.SelectedDate) + "' and '" + string.Format("{0:yyyy-MM-dd}",dpDatum2.SelectedDate) + "'";
                 }
 
             }
-            //MessageBox.Show(search);
+            MessageBox.Show(search);
             command.CommandText = search;
             lstSuchResultat.ItemsSource = myHaushaltsbuch.Suchen(command);
             

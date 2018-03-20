@@ -229,8 +229,8 @@ namespace Haushaltsbuch
             stckZeileEinkommen = new StackPanel { Orientation = Orientation.Horizontal };
             stckZeileEinkommen.Children.Add(new DatePicker { SelectedDate = DateTime.Now.Date });
             stckZeileEinkommen.Children.Add(new TextBox { Width = 200 });
-            stckZeileEinkommen.Children.Add(new Nummernfeld());
-            stckZeileEinkommen.Children.Add(new ComboBox { ItemsSource = _haushaltsbuch.familienmitglied });
+            stckZeileEinkommen.Children.Add(new Nummernfeld { Width = 100 });
+            stckZeileEinkommen.Children.Add(new ComboBox { ItemsSource = _haushaltsbuch.familienmitglied, Width = 100 });
             Button btnEinkommen = new Button { Content = "OK", Width = 100 };
             btnEinkommen.Click += BtnEinkommen_Click;
             btnEinkommen.IsEnabled = Prodgr.Count > 0;
