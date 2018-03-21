@@ -323,10 +323,15 @@ namespace Haushaltsbuch
                 }
 
             }
-            MessageBox.Show(search);
+           // MessageBox.Show(search);
             command.CommandText = search;
             lstSuchResultat.ItemsSource = myHaushaltsbuch.Suchen(command);
             
+        }
+
+        private void bearbeiten_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Bearbeiten");
         }
 
         //private void RefreshContent()

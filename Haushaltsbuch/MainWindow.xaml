@@ -95,6 +95,11 @@
                         <GridViewColumn Header="Kategorie" DisplayMemberBinding="{Binding Path=Artikel.kategorie}" Width="100"/>
                     </GridView>
                 </ListView.View>
+                <ListView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Bearbeiten" Name="bearbeiten" Click="bearbeiten_Click"/>
+                    </ContextMenu>
+                </ListView.ContextMenu>
             </ListView>
         </Grid>
     </DockPanel>
