@@ -63,6 +63,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Anzeige.cs" />
+    <Compile Include="BearbeitenFenster.xaml.cs">
+      <DependentUpon>BearbeitenFenster.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Einkommen.cs" />
     <Compile Include="Eintrag.cs" />
     <Compile Include="Hauptbuch.cs" />
@@ -83,6 +86,10 @@
     </Compile>
     <Compile Include="Rechnung.cs" />
     <Compile Include="Shop.cs" />
+    <Page Include="BearbeitenFenster.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

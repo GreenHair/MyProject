@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Haushaltsbuch", "Haushaltsbuch\Haushaltsbuch.csproj", "{6F0460C2-7C64-4E2B-A9ED-9ADB2203EBE1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HaushaltFestePosten", "..\HaushaltFestePosten\HaushaltFestePosten\HaushaltFestePosten.csproj", "{2A6D5F34-C95F-40F6-AF5F-BD7CB6F820B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +15,6 @@ Global
 		{6F0460C2-7C64-4E2B-A9ED-9ADB2203EBE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F0460C2-7C64-4E2B-A9ED-9ADB2203EBE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F0460C2-7C64-4E2B-A9ED-9ADB2203EBE1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2A6D5F34-C95F-40F6-AF5F-BD7CB6F820B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2A6D5F34-C95F-40F6-AF5F-BD7CB6F820B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2A6D5F34-C95F-40F6-AF5F-BD7CB6F820B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2A6D5F34-C95F-40F6-AF5F-BD7CB6F820B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

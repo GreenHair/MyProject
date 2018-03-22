@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Haushaltsbuch
 {
-    class Suchergebnis
+    public class Suchergebnis
     {
         public Rechnung Kassenzettel { get; set; }
         public Posten Artikel { get; set; }

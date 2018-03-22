@@ -100,7 +100,7 @@ namespace Haushaltsbuch
 
             cmbKategorie.ItemsSource = myHaushaltsbuch.Kategorien;
             cmbLaden.ItemsSource = myHaushaltsbuch.AlleLaeden;
-            //stckPreisSuchen.Children.Add(new NummerfeldTest.NumberInput());
+
 
             progressbar.Close();
 
@@ -190,6 +190,11 @@ namespace Haushaltsbuch
             tbcEintrag.Visibility = Visibility.Collapsed;
             uebersicht.Visibility = Visibility.Collapsed;//scrbar
             grdEinkommen.Visibility = Visibility.Collapsed;
+            
+            //Suchergebnis s = new Suchergebnis();
+            //s.Kassenzettel = new Rechnung { datum = DateTime.Now, einmalig = true };
+            //s.Artikel = new Posten { bezeichnung = "Milch", betrag = 0.68 };
+            //lstSuchResultat.Items.Add(s);
         }
 
         private static void UebersichtEinkommen(string wann, StackPanel stckEinkommen, IEnumerable<Einkommen> einkommen)
@@ -331,7 +336,15 @@ namespace Haushaltsbuch
 
         private void bearbeiten_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Bearbeiten");
+            BearbeitenFenster Window = new BearbeitenFenster((Suchergebnis)lstSuchResultat.SelectedItem);
+            Window.Update += Window_Update;
+            Window.Show();
+        }
+
+        private void Window_Update(MySqlCommand command)
+        {
+            int result = myHaushaltsbuch.Eintragen(command);
+            if (result > 0) MessageBox.Show("Daten erfolgreich geändert");
         }
 
         //private void RefreshContent()

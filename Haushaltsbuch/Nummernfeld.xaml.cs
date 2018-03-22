@@ -24,12 +24,26 @@ namespace Haushaltsbuch
         Regex number_regex = new Regex("([0-9])");
         Regex komma_regex = new Regex("([0-9,])");
         bool komma = false;
+
+        public static DependencyProperty BetragProperty = DependencyProperty.Register("Betrag", typeof(double), typeof(Nummernfeld));
+        public double Betrag
+        {
+            get
+            {
+                return (double)GetValue(BetragProperty);
+            }
+            set
+            {
+                SetValue(BetragProperty, value);
+            }
+        }
+
         public Nummernfeld()
         {
             InitializeComponent();
             //txtBox.Width = 100;
         }
-
+        
         public string Text
         {
             get
@@ -41,6 +55,8 @@ namespace Haushaltsbuch
                 txtBox.Text = value;
             }
         }
+
+        
 
         private void txtBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
