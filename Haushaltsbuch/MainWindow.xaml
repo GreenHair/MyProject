@@ -30,17 +30,20 @@
             <TabItem Header="Last Month" Name="lastMonth" GotFocus="tabItem_GotFocus"></TabItem>
         </TabControl>
         <!--</ScrollViewer>-->
-        <Grid Name="grdEinkommen" Visibility="Collapsed" DockPanel.Dock="Top">
+        <ScrollViewer Name="grdEinkommen" Visibility="Collapsed" DockPanel.Dock="Top">
+            <StackPanel Name="stckEinkommen" HorizontalAlignment="Center"></StackPanel>
+        </ScrollViewer>
+        <!--<Grid Name="grdEinkommen" Visibility="Collapsed" DockPanel.Dock="Top">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <StackPanel Name="stckEinkommen" Grid.Row="0">
-                <!--<Label Content="Einkommen aktueller Monat" HorizontalAlignment="Center" FontSize="16" FontWeight="Bold"/>-->
+                --><!--<Label Content="Einkommen aktueller Monat" HorizontalAlignment="Center" FontSize="16" FontWeight="Bold"/>--><!--
 
             </StackPanel>
             <StackPanel Name="stckEinkommenPrev" Grid.Row="1"></StackPanel>
-        </Grid>
+        </Grid>-->
         <TabControl Name="tbcEintrag" DockPanel.Dock="Top" Visibility="Collapsed">
             <TabItem Header="Rechnung" Name="tbiRechnung" ></TabItem>
             <TabItem Header="Laden" Name="tbiShop"></TabItem>

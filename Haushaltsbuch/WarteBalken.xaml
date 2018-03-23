@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Haushaltsbuch"
         mc:Ignorable="d"
-        Title="Verbinden mit Datenbank..." Height="100" Width="300" Topmost="True" ResizeMode="NoResize" WindowStyle="None">
+        Title="Verbinden mit Datenbank..." Height="80" Width="300" Topmost="True" ResizeMode="NoResize" WindowStyle="None">
     <Grid Margin="20">
         <Label Content="Verbinden mit Datenbank..."/>
         <ProgressBar IsIndeterminate="True" Margin="0,25,0,0"/>

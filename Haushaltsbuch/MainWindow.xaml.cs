@@ -86,7 +86,7 @@ namespace Haushaltsbuch
             UebersichtEinkommen("Einkommen aktueller Monat", stckEinkommen, AktMonEin);
 
             var PrevMonEin = from einnahmen in myHaushaltsbuch.einnahmen where einnahmen.Datum.Month == DateTime.Now.Month -1 select einnahmen;
-            UebersichtEinkommen("Einkommen vorherigen Monat", stckEinkommenPrev, PrevMonEin);
+           // UebersichtEinkommen("Einkommen vorherigen Monat", stckEinkommenPrev, PrevMonEin);
             // Eintrag eintrag = new Eintrag(myHaushaltsbuch.AlleLaeden, myHaushaltsbuch.Kategorien);
             eintrag = new Eintrag(myHaushaltsbuch);
             tbiRechnung.Content = eintrag.NeuerRechnung(myHaushaltsbuch.familienmitglied);
@@ -197,63 +197,81 @@ namespace Haushaltsbuch
             lstSuchResultat.Items.Add(s);
         }
 
-        private static void UebersichtEinkommen(string wann, StackPanel stckEinkommen, IEnumerable<Einkommen> einkommen)
-        {
-            stckEinkommen.Children.Add(new Label
-            {
-                Content = wann,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                FontSize = 16,
-                FontWeight = FontWeights.Black
-            });
-            Grid Tabelle = new Grid { HorizontalAlignment = HorizontalAlignment.Center };
-            Tabelle.ColumnDefinitions.Add(new ColumnDefinition());
-            Tabelle.ColumnDefinitions.Add(new ColumnDefinition());
+        private void UebersichtEinkommen(string wann, StackPanel stckEinkommen, IEnumerable<Einkommen> einkommen)
+        {            
+            var sortiert = from eingang in myHaushaltsbuch.einnahmen group eingang by eingang.Datum.Month into promonat orderby promonat.First().Datum descending select promonat;
 
-            int i = 0;
-            foreach(Einkommen ein in einkommen)
+            foreach(var monat in sortiert)
             {
-                Tabelle.RowDefinitions.Add(new RowDefinition());
-                TextBox was = new TextBox { Text = ein.Bezeichnung, IsReadOnly = true, Width = 150 };
-                Grid.SetColumn(was, 0);
-                Grid.SetRow(was, i);
-                Tabelle.Children.Add(was);
-                TextBox wieviel = new TextBox
-                {
-                    Text = ein.Betrag.ToString("C"),
-                    IsReadOnly = true,
-                    Width = 150,
-                    HorizontalContentAlignment = HorizontalAlignment.Right
-                }; 
-                Grid.SetColumn(wieviel, 1);
-                Grid.SetRow(wieviel, i);
-                Tabelle.Children.Add(wieviel);
-                i++;
+                stckEinkommen.Children.Add(new Label { Content = string.Format("{0:MMMM}", monat.First().Datum), FontWeight = FontWeights.Bold });
+                ListView tabelle = new ListView { BorderThickness = new Thickness(0, 0, 0, 2), BorderBrush = Brushes.Black };
+                GridView grid = new GridView();
+                grid.Columns.Add(new GridViewColumn { Header = "Bezeichnung", Width = 150, DisplayMemberBinding = new Binding { Path = new PropertyPath("Bezeichnung") } });
+                grid.Columns.Add(new GridViewColumn { Header = "Betrag", Width = 100, DisplayMemberBinding = new Binding { Path = new PropertyPath("Betrag"), StringFormat = "{0:C}", ConverterCulture = new System.Globalization.CultureInfo("de-DE") } });
+                tabelle.View = grid;
+                tabelle.ItemsSource = monat;
+                stckEinkommen.Children.Add(tabelle);
+                StackPanel zeile = new StackPanel { Orientation = Orientation.Horizontal };
+                zeile.Children.Add(new Label { Content = "Summe",Width = 150 });
+                zeile.Children.Add(new Label { Content = string.Format("{0:C}", monat.Sum(b => b.Betrag)), Width = 100 });
+                stckEinkommen.Children.Add(zeile);
             }
-            Tabelle.RowDefinitions.Add(new RowDefinition());
-            TextBox gesamt = new TextBox
-            {
-                Text = "Gesamt",
-                Width = 150,
-                FontWeight = FontWeights.Bold,
-                BorderBrush = Brushes.Black,
-                BorderThickness = new Thickness(0, 2, 0, 0)
-            };
-            Grid.SetRow(gesamt, i);
-            Tabelle.Children.Add(gesamt);
-            TextBox gesamtSumme = new TextBox
-            {
-                Text = einkommen.Sum(e => e.Betrag).ToString("C"),
-                HorizontalContentAlignment = HorizontalAlignment.Right,
-                Width = 150,
-                FontWeight = FontWeights.Bold,
-                BorderBrush = Brushes.Black,
-                BorderThickness = new Thickness(0, 2, 0, 0)
-            };
-            Grid.SetRow(gesamtSumme, i);
-            Grid.SetColumn(gesamtSumme, 1);
-            Tabelle.Children.Add(gesamtSumme);
-            stckEinkommen.Children.Add(Tabelle);
+
+            //stckEinkommen.Children.Add(new Label
+            //{
+            //    Content = wann,
+            //    HorizontalAlignment = HorizontalAlignment.Center,
+            //    FontSize = 16,
+            //    FontWeight = FontWeights.Black
+            //});
+            //Grid Tabelle = new Grid { HorizontalAlignment = HorizontalAlignment.Center };
+            //Tabelle.ColumnDefinitions.Add(new ColumnDefinition());
+            //Tabelle.ColumnDefinitions.Add(new ColumnDefinition());
+
+            //int i = 0;
+            //foreach(Einkommen ein in einkommen)
+            //{
+            //    Tabelle.RowDefinitions.Add(new RowDefinition());
+            //    TextBox was = new TextBox { Text = ein.Bezeichnung, IsReadOnly = true, Width = 150 };
+            //    Grid.SetColumn(was, 0);
+            //    Grid.SetRow(was, i);
+            //    Tabelle.Children.Add(was);
+            //    TextBox wieviel = new TextBox
+            //    {
+            //        Text = ein.Betrag.ToString("C"),
+            //        IsReadOnly = true,
+            //        Width = 150,
+            //        HorizontalContentAlignment = HorizontalAlignment.Right
+            //    }; 
+            //    Grid.SetColumn(wieviel, 1);
+            //    Grid.SetRow(wieviel, i);
+            //    Tabelle.Children.Add(wieviel);
+            //    i++;
+            //}
+            //Tabelle.RowDefinitions.Add(new RowDefinition());
+            //TextBox gesamt = new TextBox
+            //{
+            //    Text = "Gesamt",
+            //    Width = 150,
+            //    FontWeight = FontWeights.Bold,
+            //    BorderBrush = Brushes.Black,
+            //    BorderThickness = new Thickness(0, 2, 0, 0)
+            //};
+            //Grid.SetRow(gesamt, i);
+            //Tabelle.Children.Add(gesamt);
+            //TextBox gesamtSumme = new TextBox
+            //{
+            //    Text = einkommen.Sum(e => e.Betrag).ToString("C"),
+            //    HorizontalContentAlignment = HorizontalAlignment.Right,
+            //    Width = 150,
+            //    FontWeight = FontWeights.Bold,
+            //    BorderBrush = Brushes.Black,
+            //    BorderThickness = new Thickness(0, 2, 0, 0)
+            //};
+            //Grid.SetRow(gesamtSumme, i);
+            //Grid.SetColumn(gesamtSumme, 1);
+            //Tabelle.Children.Add(gesamtSumme);
+            //stckEinkommen.Children.Add(Tabelle);
         }
         
         private void Verbinden_Click(object sender, RoutedEventArgs e)
