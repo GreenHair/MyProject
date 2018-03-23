@@ -28,8 +28,8 @@ namespace Haushaltsbuch
         public BearbeitenFenster(Suchergebnis suche)
         {
             InitializeComponent();
-            _suche = suche;
-            numBetrag.Text = suche.Artikel.betrag.ToString();
+            _suche = suche;            
+           // numBetrag.Text = suche.Artikel.betrag.ToString();
             DataContext = suche;
             
         }

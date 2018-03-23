@@ -74,7 +74,7 @@
                 <RadioButton Name="rHigher" Content="Höher als" Margin="10,0,0,0"/>
                 <RadioButton Name="rLower" Content="Niedriger als" Margin="10,0,0,0"/>
                 <RadioButton Name="rEquals" Content="Gleich" Margin="10,0,0,0" IsChecked="True"/>
-                <local:Nummernfeld x:Name="numPreis"/>
+                <local:Nummernfeld x:Name="numPreis" Margin="10,10"/>
             </StackPanel>
             <StackPanel Grid.Column="3" Grid.Row="1">
                 <DatePicker Name="dpDatum" Margin="10,0"/>
@@ -84,8 +84,13 @@
                 <RadioButton Name="rZwischen" Content="Zwischen" Margin="10,0,0,10"/>
                 <DatePicker Name="dpDatum2" SelectedDate="{Binding ElementName=dpDatum, Path=SelectedDate, Mode=OneWay}" Margin="10,0"/>
             </StackPanel>
-            <Button Name="btnSuchenStarten" Grid.Column="4" Grid.Row="1" VerticalAlignment="Bottom" Margin="10" Click="btnSuchenStarten_Click">suchen</Button>
-            <ListView Name="lstSuchResultat" ItemsSource="{Binding}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4">
+            <StackPanel Grid.Column="4" Grid.Row="1">
+                <RadioButton Name="rEinmal" Content="Einmalige Ausgaben" Margin="10,10"/>
+                <RadioButton Name="rFest" Content="Feste Ausgaben" Margin="10,0"/>
+                <RadioButton Name="rBeide" Content="Alles Anzeigen" IsChecked="True" Margin="10"/>
+                <Button Name="btnSuchenStarten" VerticalAlignment="Bottom" Margin="10" Click="btnSuchenStarten_Click">suchen</Button>
+            </StackPanel>
+            <ListView Name="lstSuchResultat" ItemsSource="{Binding}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Margin="10,10,0,0">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Datum" DisplayMemberBinding="{Binding Path=Kassenzettel.datum , StringFormat={}{0:dd.MM.yy}}" Width="100"/>
@@ -101,6 +106,11 @@
                     </ContextMenu>
                 </ListView.ContextMenu>
             </ListView>
+            <StackPanel VerticalAlignment="Bottom" Grid.Row="2" Grid.Column="4">
+                <TextBlock Name="txtAnz" Text="Anzahl gefundene Ausgaben: 0" TextWrapping="Wrap"/>
+                <Label Name="lblSumme" Content="Summe: "/>
+                <Label Name="lblAvg" Content="Durchschnitt: "/>
+            </StackPanel>
         </Grid>
     </DockPanel>
 </Window>

@@ -190,11 +190,11 @@ namespace Haushaltsbuch
             tbcEintrag.Visibility = Visibility.Collapsed;
             uebersicht.Visibility = Visibility.Collapsed;//scrbar
             grdEinkommen.Visibility = Visibility.Collapsed;
-            
-            //Suchergebnis s = new Suchergebnis();
-            //s.Kassenzettel = new Rechnung { datum = DateTime.Now, einmalig = true };
-            //s.Artikel = new Posten { bezeichnung = "Milch", betrag = 0.68 };
-            //lstSuchResultat.Items.Add(s);
+
+            Suchergebnis s = new Suchergebnis();
+            s.Kassenzettel = new Rechnung { datum = DateTime.Now, einmalig = true };
+            s.Artikel = new Posten { bezeichnung = "Milch", betrag = 0.68 };
+            lstSuchResultat.Items.Add(s);
         }
 
         private static void UebersichtEinkommen(string wann, StackPanel stckEinkommen, IEnumerable<Einkommen> einkommen)
@@ -267,14 +267,16 @@ namespace Haushaltsbuch
         {
             string result = myHaushaltsbuch.Verbinden(connectstring);
             if(result == "Verbunden") { Window_Loaded(new object(),new RoutedEventArgs()); }
+            else { MessageBox.Show(result); }
         }
 
         private void btnSuchenStarten_Click(object sender, RoutedEventArgs e)
         {
             string search = " select rechnung.id as r_id, laden,datum,einmalig,person,ausgaben.ID as a_id,bezeichnung,betrag,prod_gr from ausgaben join rechnung on rechnung.id = ausgaben.rechnungsnr";
+            bool hatVorgaenger = false;
             MySqlCommand command = new MySqlCommand();
 
-            if (txtBezeichnung.Text.Length != 0 || numPreis.Text.Length != 0 || cmbKategorie.SelectedItem != null || cmbLaden.SelectedItem != null || dpDatum.SelectedDate != null)
+            if (txtBezeichnung.Text.Length != 0 || numPreis.Betrag != 0 || cmbKategorie.SelectedItem != null || cmbLaden.SelectedItem != null || dpDatum.SelectedDate != null)
             {
                 search += " where ";
                 if(txtBezeichnung.Text.Length != 0)
@@ -283,10 +285,11 @@ namespace Haushaltsbuch
                     MySqlParameter bez_par = new MySqlParameter("@bez", MySqlDbType.VarChar);
                     bez_par.Value = txtBezeichnung.Text;
                     command.Parameters.Add(bez_par);
+                    hatVorgaenger = true;
                 }
-                if(numPreis.Text.Length != 0)
+                if(numPreis.Betrag != 0)
                 {
-                    if(txtBezeichnung.Text.Length != 0)
+                    if(hatVorgaenger)
                     {
                         search += " and ";
                     }
@@ -298,26 +301,29 @@ namespace Haushaltsbuch
                     MySqlParameter par_betr = new MySqlParameter("@betr", MySqlDbType.Double);
                     par_betr.Value = Convert.ToDouble(numPreis.Text);
                     command.Parameters.Add(par_betr);
+                    hatVorgaenger = true;
                 }
                 if(cmbKategorie.SelectedItem != null)
                 {
-                    if(txtBezeichnung.Text.Length != 0 || numPreis.Text.Length != 0)
+                    if(hatVorgaenger)
                     { 
                         search += " and ";
                     }
                     search += "prod_gr = " + ((Produktgruppe)cmbKategorie.SelectedItem).id;
+                    hatVorgaenger = true;
                 }
                 if (cmbLaden.SelectedItem != null)
                 {
-                    if (txtBezeichnung.Text.Length != 0 || numPreis.Text.Length != 0 || cmbKategorie.SelectedItem != null)
+                    if (hatVorgaenger)
                     {
                         search += " and ";
                     }
                     search += "laden = " + ((Shop)cmbLaden.SelectedItem).id;
+                    hatVorgaenger = true;
                 }
                 if(dpDatum.SelectedDate != null)
                 {
-                    if (txtBezeichnung.Text.Length != 0 || numPreis.Text.Length != 0 || cmbKategorie.SelectedItem != null || cmbLaden.SelectedItem != null)
+                    if (hatVorgaenger)
                     {
                         search += " and ";
                     }
@@ -325,13 +331,34 @@ namespace Haushaltsbuch
                     if(rAm.IsChecked == true)  search += "datum = '" + string.Format("{0:yyyy-MM-dd}", dpDatum.SelectedDate) + "'";
                     if(rNach.IsChecked == true) search += "datum > '" + string.Format("{0:yyyy-MM-dd}", dpDatum.SelectedDate) + "'";
                     if(rZwischen.IsChecked == true) search += "datum between '" + string.Format("{0:yyyy-MM-dd}", dpDatum.SelectedDate) + "' and '" + string.Format("{0:yyyy-MM-dd}",dpDatum2.SelectedDate) + "'";
+                    hatVorgaenger = true;
+                }
+                if(rBeide.IsChecked == false)
+                {
+                    if (hatVorgaenger)
+                    {
+                        search += " and ";
+                    }
+                    if (rEinmal.IsChecked == true) search += "einmalig = 1";
+                    if (rFest.IsChecked == true) search += "einmalig = 0";
                 }
 
             }
            // MessageBox.Show(search);
             command.CommandText = search;
-            lstSuchResultat.ItemsSource = myHaushaltsbuch.Suchen(command);
-            
+            List<Suchergebnis> Gefunden = myHaushaltsbuch.Suchen(command);
+            if (Gefunden.Count == 0)
+            {
+                MessageBox.Show("Leider nichts gefunden");
+            }
+            else
+            {
+                lstSuchResultat.ItemsSource = Gefunden;
+
+                txtAnz.Text = "Anzahl gefundene Ausgaben: " + lstSuchResultat.Items.Count;
+                lblSumme.Content = "Summe: " + string.Format("{0:C}", (from ausgabe in Gefunden select ausgabe.Artikel.betrag).Sum());
+                lblAvg.Content = "Durchschnittspreis: " + string.Format("{0:C}", (from ausgabe in Gefunden select ausgabe.Artikel.betrag).Average());
+            }
         }
 
         private void bearbeiten_Click(object sender, RoutedEventArgs e)
