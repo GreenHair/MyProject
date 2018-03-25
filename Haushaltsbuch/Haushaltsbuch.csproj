@@ -81,6 +81,7 @@
     <Compile Include="VerbindenFenster.xaml.cs">
       <DependentUpon>VerbindenFenster.xaml</DependentUpon>
     </Compile>
+    <Compile Include="VerbindungsException.cs" />
     <Compile Include="WarteBalken.xaml.cs">
       <DependentUpon>WarteBalken.xaml</DependentUpon>
     </Compile>

@@ -88,7 +88,7 @@ namespace Haushaltsbuch
             }
             catch (MySqlException e)
             {
-                MessageBox.Show(e.Message);
+                //throw new VerbindungsException(e.Message);
             }
         }
 

@@ -25,10 +25,13 @@ namespace Haushaltsbuch
         public event DelUpdater Update;
         Suchergebnis _suche;
 
-        public BearbeitenFenster(Suchergebnis suche)
+        public BearbeitenFenster(Suchergebnis suche, List<Shop> laden, List<Produktgruppe> kat, List<Person> fam)
         {
             InitializeComponent();
-            _suche = suche;            
+            _suche = suche;
+            cmbLaden.ItemsSource = laden;
+            cmbKategorie.ItemsSource = kat;
+            cmbPerson.ItemsSource = fam;
            // numBetrag.Text = suche.Artikel.betrag.ToString();
             DataContext = suche;
             

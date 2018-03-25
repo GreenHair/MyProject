@@ -29,7 +29,7 @@
         <StackPanel Name="stckArtikel" Margin="5,30,5,5" Grid.Column="1" Grid.Row="1">
             <TextBox Name="txtBezeichnung" Text="{Binding Path=Artikel.bezeichnung}" IsEnabled="False"/>
             <local:Nummernfeld x:Name="numBetrag" Betrag="{Binding Path=Artikel.betrag}" IsEnabled="False" Margin="0,10"/>
-            <ComboBox Name="cmbKategorie" IsEnabled="False"/>
+            <ComboBox Name="cmbKategorie" IsEnabled="False" ItemsSource="{Binding}" SelectedItem="{Binding Path=Artikel.kategorie}"/>
         </StackPanel>
         <Button Name="btnAbbrechen" Content="Abbrechen" Click="btnAbbrechen_Click" Grid.Row="2" Margin="20,15"/>
         <Button Name="btnSpeichern" Content="Speichern" Click="btnSpeichern_Click" Grid.Row="2" Grid.Column="1" Margin="20,15" IsEnabled="False"/>

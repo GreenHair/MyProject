@@ -72,3 +72,5 @@ C:\Users\praktikant\Source\Repos\MyProject\Haushaltsbuch\obj\Debug\Haushaltsbuch
 C:\Users\praktikant\Source\Repos\MyProject\Haushaltsbuch\obj\Debug\Haushaltsbuch.pdb
 C:\Users\praktikant\Source\Repos\MyProject\Haushaltsbuch\obj\Debug\BearbeitenFenster.g.cs
 C:\Users\praktikant\Source\Repos\MyProject\Haushaltsbuch\obj\Debug\BearbeitenFenster.baml
+C:\Users\Auke Swen\documents\visual studio 2015\Projects\Haushaltsbuch\Haushaltsbuch\obj\Debug\BearbeitenFenster.g.cs
+C:\Users\Auke Swen\documents\visual studio 2015\Projects\Haushaltsbuch\Haushaltsbuch\obj\Debug\BearbeitenFenster.baml

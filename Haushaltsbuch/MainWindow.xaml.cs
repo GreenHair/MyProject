@@ -34,7 +34,15 @@ namespace Haushaltsbuch
             InitializeComponent();
             progressbar = new WarteBalken();
             progressbar.Show();
-            myHaushaltsbuch = new Hauptbuch();
+            //try
+            //{
+                myHaushaltsbuch = new Hauptbuch();
+            //}
+            //catch(VerbindungsException error)
+            //{
+            //    MessageBox.Show(error.Message);
+            //    //Verbinden_Click(new object(), new RoutedEventArgs());
+            //}
             
             //myHaushaltsbuch = new Hauptbuch();
             //this_week = new Anzeige(myHaushaltsbuch.GetRechnung_W());
@@ -191,10 +199,10 @@ namespace Haushaltsbuch
             uebersicht.Visibility = Visibility.Collapsed;//scrbar
             grdEinkommen.Visibility = Visibility.Collapsed;
 
-            Suchergebnis s = new Suchergebnis();
-            s.Kassenzettel = new Rechnung { datum = DateTime.Now, einmalig = true };
-            s.Artikel = new Posten { bezeichnung = "Milch", betrag = 0.68 };
-            lstSuchResultat.Items.Add(s);
+            //Suchergebnis s = new Suchergebnis();
+            //s.Kassenzettel = new Rechnung { datum = DateTime.Now, einmalig = true };
+            //s.Artikel = new Posten { bezeichnung = "Milch", betrag = 0.68 };
+            //lstSuchResultat.Items.Add(s);
         }
 
         private void UebersichtEinkommen(string wann, StackPanel stckEinkommen, IEnumerable<Einkommen> einkommen)
@@ -380,8 +388,8 @@ namespace Haushaltsbuch
         }
 
         private void bearbeiten_Click(object sender, RoutedEventArgs e)
-        {
-            BearbeitenFenster Window = new BearbeitenFenster((Suchergebnis)lstSuchResultat.SelectedItem);
+        {            
+            BearbeitenFenster Window = new BearbeitenFenster((Suchergebnis)lstSuchResultat.SelectedItem, myHaushaltsbuch.AlleLaeden, myHaushaltsbuch.Kategorien, myHaushaltsbuch.familienmitglied);
             Window.Update += Window_Update;
             Window.Show();
         }
