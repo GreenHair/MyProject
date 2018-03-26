@@ -34,15 +34,9 @@ namespace Haushaltsbuch
             InitializeComponent();
             progressbar = new WarteBalken();
             progressbar.Show();
-            //try
-            //{
-                myHaushaltsbuch = new Hauptbuch();
-            //}
-            //catch(VerbindungsException error)
-            //{
-            //    MessageBox.Show(error.Message);
-            //    //Verbinden_Click(new object(), new RoutedEventArgs());
-            //}
+            
+            myHaushaltsbuch = new Hauptbuch();
+            
             
             //myHaushaltsbuch = new Hauptbuch();
             //this_week = new Anzeige(myHaushaltsbuch.GetRechnung_W());
@@ -109,6 +103,7 @@ namespace Haushaltsbuch
             cmbKategorie.ItemsSource = myHaushaltsbuch.Kategorien;
             cmbLaden.ItemsSource = myHaushaltsbuch.AlleLaeden;
 
+            miVerbinden.IsEnabled = !myHaushaltsbuch.IstVerbunden;
 
             progressbar.Close();
 
@@ -294,6 +289,7 @@ namespace Haushaltsbuch
             string result = myHaushaltsbuch.Verbinden(connectstring);
             if(result == "Verbunden") { Window_Loaded(new object(),new RoutedEventArgs()); }
             else { MessageBox.Show(result); }
+            miVerbinden.IsEnabled = !myHaushaltsbuch.IstVerbunden;
         }
 
         private void btnSuchenStarten_Click(object sender, RoutedEventArgs e)

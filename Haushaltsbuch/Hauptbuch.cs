@@ -28,6 +28,7 @@ namespace Haushaltsbuch
         List<Shop> alleLaeden = new List<Shop>();
         List<Produktgruppe> kategorien = new List<Produktgruppe>();
         double _bilanz;
+        public bool IstVerbunden { get; private set; }
 
         public Hauptbuch()
         {
@@ -35,7 +36,7 @@ namespace Haushaltsbuch
             {
                 connection = new MySqlConnection(dbconnectstring);
                 command = connection.CreateCommand();
-                connection.Open();
+                connection.Open();                
 
                 command.CommandText = "SELECT * FROM familienmitglied";
                 Reader = command.ExecuteReader(); 
@@ -87,9 +88,10 @@ namespace Haushaltsbuch
                // connection.Close();
             }
             catch (MySqlException e)
-            {
-                //throw new VerbindungsException(e.Message);
+            {                
+                ,string str = e.Message;
             }
+            IstVerbunden = connection.State == System.Data.ConnectionState.Open;
         }
 
         public List<Rechnung> ausgaben
@@ -346,6 +348,7 @@ namespace Haushaltsbuch
 
         internal string Verbinden(string connectstring)
         {
+            string result;
             try
             {
                 connection = new MySqlConnection(connectstring);
@@ -358,12 +361,14 @@ namespace Haushaltsbuch
                 kategorien = GetKategorien();
                 _einnahmen = GetEinkommen();
 
-                return "Verbunden";
+                result = "Verbunden";
             }
             catch(MySqlException error)
             {
-                return error.Message;
+                result = error.Message;
             }
+            IstVerbunden = connection.State == System.Data.ConnectionState.Open;
+            return result;
         }
 
         internal List<Suchergebnis> Suchen(MySqlCommand command)
