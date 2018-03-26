@@ -89,7 +89,7 @@ namespace Haushaltsbuch
             }
             catch (MySqlException e)
             {                
-                ,string str = e.Message;
+                string str = e.Message;
             }
             IstVerbunden = connection.State == System.Data.ConnectionState.Open;
         }
