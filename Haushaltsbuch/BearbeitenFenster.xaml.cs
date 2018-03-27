@@ -82,13 +82,13 @@ namespace Haushaltsbuch
 
             if(chkArtikel.IsChecked == true)
             {
-                sql += "update ausgaben set bezeichnung = @bez, betrag = @betrag, prod_gr = " + ((Produktgruppe)cmbKategorie.SelectedItem).id +
-                    " where ausgaben.id = " + _suche.Artikel.id;
-                MySql.Data.MySqlClient.MySqlParameter par_bez = new MySql.Data.MySqlClient.MySqlParameter("@bez", MySql.Data.MySqlClient.MySqlDbType.VarChar);
+                sql += "update ausgaben set bezeichnung = @bez, betrag = @betr, prod_gr = " + ((Produktgruppe)cmbKategorie.SelectedItem).id +
+                    " where ausgaben.ID = " + _suche.Artikel.id;
+                MySql.Data.MySqlClient.MySqlParameter par_bez = new MySql.Data.MySqlClient.MySqlParameter("@bez", MySql.Data.MySqlClient.MySqlDbType.VarChar,60);
                 par_bez.Value = txtBezeichnung.Text;
                 comm.Parameters.Add(par_bez);
                 MySql.Data.MySqlClient.MySqlParameter par_betr = new MySql.Data.MySqlClient.MySqlParameter("@betr", MySql.Data.MySqlClient.MySqlDbType.Double);
-                par_betr.Value = Convert.ToDouble(numBetrag.Text);
+                par_betr.Value = numBetrag.Betrag;  //Convert.ToDouble(numBetrag.Text); 
                 comm.Parameters.Add(par_betr);
             }
 
