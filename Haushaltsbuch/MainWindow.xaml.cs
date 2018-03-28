@@ -393,7 +393,11 @@ namespace Haushaltsbuch
         private void Window_Update(MySqlCommand command)
         {
             int result = myHaushaltsbuch.Eintragen(command);
-            if (result > 0) MessageBox.Show("Daten erfolgreich geändert");
+            if (result > 0)
+            {
+                MessageBox.Show("Daten erfolgreich geändert");
+                Suchen_CLick(new object(), new RoutedEventArgs());
+            }
         }
 
         //private void RefreshContent()

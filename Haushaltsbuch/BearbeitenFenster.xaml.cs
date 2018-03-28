@@ -95,6 +95,7 @@ namespace Haushaltsbuch
             comm.CommandText = sql;
             //MessageBox.Show(sql);
             Update?.Invoke(comm);
+            Close();
         }
 
         private void chkArtikel_Checked(object sender, RoutedEventArgs e)
